@@ -1,0 +1,95 @@
+<!--
+  Generated template for the AddPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+	<ion-navbar color="primary">
+		<ion-title>Edit</ion-title>
+	</ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+	<ion-grid>
+		<ion-row>
+			<ion-col (click)="addImage()" col-4 style="background: url('../assets/imgs/Phnom_Penh.jpeg');background-size:cover; background-position: center bottom;border: 2px solid white;"></ion-col>
+			<ion-col (click)="addImage(2)" col-4 style="background: url('../assets/imgs/Battambang.jpg');background-size:cover; background-position: center bottom;border: 2px solid white;"></ion-col>
+			<ion-col col-4 style="background: url('../assets/imgs/camera.png');background-size:cover; background-position: center bottom;border: 2px solid white;"></ion-col>
+			<ion-col col-4 style="background: url();background-size:cover; background-position: center bottom;border: 2px solid white;"></ion-col>
+			<ion-col col-4 style="background: url();background-size:cover; background-position: center bottom;border: 2px solid white;"></ion-col>
+			<ion-col col-4 style="background: url();background-size:cover; background-position: center bottom;border: 2px solid white;"></ion-col>
+		</ion-row>
+	</ion-grid>
+	<ion-list>
+		<ion-item>
+			<ion-label>Listing Type</ion-label>
+			<ion-select [(ngModel)]="listingType" interface="popover">
+				<ion-option value="sell">Sell</ion-option>
+				<ion-option value="rent">Rent</ion-option>
+			</ion-select>
+		</ion-item>
+		<ion-item>
+			<ion-label>Type</ion-label>
+			<ion-select [(ngModel)]="type" interface="popover">
+				<ion-option value="house">House</ion-option>
+				<ion-option value="apartment">Apartment</ion-option>
+				<ion-option value="land">Land</ion-option>
+			</ion-select>
+		</ion-item>
+		<ion-item>
+			<ion-label>Location</ion-label>
+			<ion-select [(ngModel)]="location" interface="popover">
+				<ion-option value="phnom-penh">Phnom Penh</ion-option>
+				<ion-option value="preah-sihanouk">Preah Sihanouk</ion-option>
+				<ion-option value="kampong-cham">Kampong Cham</ion-option>
+				<ion-option value="siem-reap">Siem Reap</ion-option>
+				<ion-option value="battambang">Battambang</ion-option>
+				<ion-option value="kandal">Kandal</ion-option>
+				<ion-option value="banteay-meanchey">Banteay Meanchey</ion-option>
+				<ion-option value="kampong-chhnang">Kampong Chhnang</ion-option>
+				<ion-option value="kampong-speu">Kampong Speu</ion-option>
+				<ion-option value="kampong-thom">Kampong Thom</ion-option>
+				<ion-option value="kampot">Kampot</ion-option>
+				<ion-option value="kep">Kep</ion-option>
+				<ion-option value="koh-kong">Koh Kong</ion-option>
+				<ion-option value="kratie">Kratie</ion-option>
+				<ion-option value="mondulkiri">Mondulkiri</ion-option>
+				<ion-option value="oddar-meanchey">Otdar Meanchey</ion-option>
+				<ion-option value="pailin">Pailin</ion-option>
+				<ion-option value="preah-vihear">Preah Vihear</ion-option>
+				<ion-option value="prey-veng">Prey Veng</ion-option>
+				<ion-option value="pursat">Pursat</ion-option>
+				<ion-option value="ratanakiri">Ratanakiri</ion-option>
+				<ion-option value="stung-treng">Stung Treng</ion-option>
+				<ion-option value="svay-rieng">Svay Rieng</ion-option>
+				<ion-option value="takeo">Takeo</ion-option>
+				<ion-option value="tboung-khmum">Tboung Khmum</ion-option>
+			</ion-select>
+		</ion-item>
+		<ion-item>
+			<ion-label>Price($)</ion-label>
+			<ion-input class="step3" style="text-align: right;" type="number"></ion-input>
+		</ion-item>
+		<ion-item>
+			<ion-label floating>Title</ion-label>
+			<ion-input type="text"></ion-input>
+		</ion-item>
+		<ion-item>
+			<ion-label floating>Description</ion-label>
+			<ion-textarea #descriptionInput id="descriptionInput" rows="1" maxLength="500" (keyup)="resize()" [(ngModel)]="description"></ion-textarea>
+		</ion-item>
+		<ion-item>
+			<ion-label>Phone 1</ion-label>
+			<ion-input class="step3" style="text-align: right;" type="number"></ion-input>
+		</ion-item>
+
+		<ion-item>
+			<ion-label>Phone 2</ion-label>
+			<ion-input class="step3" style="text-align: right;" type="number"></ion-input>
+		</ion-item>
+	</ion-list>
+</ion-content>

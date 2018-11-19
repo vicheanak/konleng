@@ -1,0 +1,121 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>Konleng</ion-title>
+    <ion-buttons end (click)="switchLanguage()">
+      <button ion-button>
+        {{"language" | translate }}
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+
+<ion-content >
+
+  <ion-searchbar [(ngModel)]="queryText" (search)="searchByKeyword($event)" placeholder='{{ "search" | translate }}'></ion-searchbar>
+  <div class="card-background-page">
+    <ion-card (click)="goListing()">
+      <div class="card-title">{{ "phnom-penh" | translate }}</div>
+      <div class="card-subtitle">100 Sell - 20 Rent</div>
+    </ion-card>
+    <ion-card (click)="goListing()">
+      <div class="card-title">{{ "preah-sihanouk" | translate }}</div>
+      <div class="card-subtitle">100 Listings</div>
+    </ion-card>
+    <ion-card>
+      <div class="card-title">{{ "kampong-cham" | translate }}</div>
+      <div class="card-subtitle">100 Listings</div>
+    </ion-card>
+    <ion-card>
+      <div class="card-title">{{ "siem-reap" | translate }}</div>
+      <div class="card-subtitle">100 Listings</div>
+    </ion-card>
+    <ion-card>
+      <div class="card-title">{{ "battambang" | translate }}</div>
+      <div class="card-subtitle">100 Listings</div>
+    </ion-card>
+    <ion-card>
+      <div class="card-title">{{ "kandal" | translate }}</div>
+      <div class="card-subtitle">100 Listings</div>
+    </ion-card>
+    <ion-card>
+      <div class="card-title">{{ "banteay-meanchey" | translate }}</div>
+      <div class="card-subtitle">100 Listings</div>
+    </ion-card>
+    <ion-card>
+      <div class="card-title">{{ "kampong-chhnang" | translate }}</div>
+      <div class="card-subtitle">100 Listings</div>
+    </ion-card>
+    <ion-card>
+      <div class="card-title">{{ "kampong-speu" | translate }}</div>
+      <div class="card-subtitle">100 Listings</div>
+    </ion-card>
+    <ion-card>
+      <div class="card-title">{{ "kampong-thom" | translate }}</div>
+      <div class="card-subtitle">100 Listings</div>
+    </ion-card>
+    <ion-card>
+      <div class="card-title">{{ "kampot" | translate }}</div>
+      <div class="card-subtitle">100 Listings</div>
+    </ion-card>
+    <ion-card>
+      <div class="card-title">{{ "kep" | translate }}</div>
+      <div class="card-subtitle">100 Listings</div>
+    </ion-card>
+    <ion-card>
+      <div class="card-title">{{ "koh-kong" | translate }}</div>
+      <div class="card-subtitle">100 Listings</div>
+    </ion-card>
+    <ion-card>
+      <div class="card-title">{{ "kratie" | translate }}</div>
+      <div class="card-subtitle">100 Listings</div>
+    </ion-card>
+    <ion-card>
+      <div class="card-title">{{ "mondulkiri" | translate }}</div>
+      <div class="card-subtitle">100 Listings</div>
+    </ion-card>
+    <ion-card>
+      <div class="card-title">{{ "oddar-meanchey" | translate }}</div>
+      <div class="card-subtitle">100 Listings</div>
+    </ion-card>
+    <ion-card>
+      <div class="card-title">{{ "pailin" | translate }}</div>
+      <div class="card-subtitle">100 Listings</div>
+    </ion-card>
+    <ion-card>
+      <div class="card-title">{{ "preah-vihear" | translate }}</div>
+      <div class="card-subtitle">100 Listings</div>
+    </ion-card>
+    <ion-card>
+      <div class="card-title">{{ "prey-veng" | translate }}</div>
+      <div class="card-subtitle">100 Listings</div>
+    </ion-card>
+    <ion-card>
+      <div class="card-title">{{ "pursat" | translate }}</div>
+      <div class="card-subtitle">100 Listings</div>
+    </ion-card>
+    <ion-card>
+      <div class="card-title">{{ "ratanakiri" | translate }}</div>
+      <div class="card-subtitle">100 Listings</div>
+    </ion-card>
+    <ion-card>
+      <div class="card-title">{{ "stung-treng" | translate }}</div>
+      <div class="card-subtitle">100 Listings</div>
+    </ion-card>
+    <ion-card>
+      <div class="card-title">{{ "svay-rieng" | translate }}</div>
+      <div class="card-subtitle">100 Listings</div>
+    </ion-card>
+    <ion-card>
+      <div class="card-title">{{ "takeo" | translate }}</div>
+      <div class="card-subtitle">100 Listings</div>
+    </ion-card>
+    <ion-card>
+      <div class="card-title">{{ "tboung-khmum" | translate }}</div>
+      <div class="card-subtitle">100 Listings</div>
+    </ion-card>
+  </div>
+  
+</ion-content>
+

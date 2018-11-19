@@ -1,0 +1,22 @@
+<ion-content>
+	<div class="splash-bg"></div>
+	<div class="splash-info">
+		<div class="splash-logo"></div>
+	</div>
+	<ion-list>
+		<ion-item>
+			<ion-label>Phone</ion-label>
+			<ion-input class="align-right" style="text-align: right;" type="number"></ion-input>
+		</ion-item>
+		<ion-item>
+			<ion-label>Password</ion-label>
+			<ion-input class="align-right" style="text-align: right;" type="password"></ion-input>
+		</ion-item>
+	</ion-list>
+	<div padding>
+		<button ion-button block round (click)="signup()">{{ 'LOGIN' | translate }}</button>
+	</div>
+	<div padding>
+		<button ion-button block round color="light" (click)="promptLostPassword()">{{ 'LOST_PASSWORD' | translate }}</button>
+	</div>
+</ion-content>

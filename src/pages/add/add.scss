@@ -1,0 +1,26 @@
+page-add {
+	
+	
+	// ion-step:nth-child(1){
+
+	// }
+	ion-input.step3 {
+		input {
+			text-align: right;
+			/* IF YOU ALSO WANT TO PUSH PLACHEHOLDER TO THE RIGHT USE THE FOLLOWING, IF NOT JUST DELETE THE ::-webkit-input-placeholder*/
+			::-webkit-input-placeholder {
+				text-align: right;
+			}
+		}
+	}
+
+	ion-grid{
+		ion-row {
+			ion-col{
+				height: 100px;	
+				margin: 15px;
+			}			
+		}	
+	}
+	
+}

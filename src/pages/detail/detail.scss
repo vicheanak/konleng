@@ -1,0 +1,32 @@
+page-detail {
+
+	.slide-zoom {
+		height: 100%;
+	}
+
+	ion-slides {
+		height: 250px;
+	}
+
+	h2{
+		font-size: 20px !important;
+		height: 40px;
+		line-height: 40px;
+	}	
+
+	.price{
+		font-weight: bold;
+		color: red;
+		font-size: 17px;
+	}
+
+	ion-note{
+		color: black !important;
+    	font-family: battambang;
+	}
+
+	p{
+		font-size: 17px !important;
+		line-height: 30px !important;
+	}
+}

@@ -1,0 +1,102 @@
+<ion-header>
+	<ion-navbar color="primary">
+		<ion-title>
+			Filter
+		</ion-title>
+		<ion-buttons end (click)="dismiss()">
+			<button ion-button icon-only >
+				<ion-icon name="close"></ion-icon>
+			</button>
+		</ion-buttons>
+	</ion-navbar>
+</ion-header>
+
+<ion-content padding>
+	<ion-list>
+		<ion-item>
+			<ion-label floating>Keywords</ion-label>
+			<ion-input type="text"></ion-input>
+		</ion-item>
+		<ion-item>
+			<ion-label>Listing Type</ion-label>
+			<ion-select [(ngModel)]="listingType" interface="popover">
+				<ion-option value="sell">Sell</ion-option>
+				<ion-option value="rent">Rent</ion-option>
+			</ion-select>
+		</ion-item>
+		<ion-item>
+			<ion-label>Type</ion-label>
+			<ion-select [(ngModel)]="type" interface="popover">
+				<ion-option value="house">House</ion-option>
+				<ion-option value="apartment">Apartment</ion-option>
+				<ion-option value="land">Land</ion-option>
+			</ion-select>
+		</ion-item>
+		<ion-item>
+			<ion-label>Location</ion-label>
+			<ion-select [(ngModel)]="location" interface="popover">
+				<ion-option value="any">Any</ion-option>
+				<ion-option value="phnom-penh">Phnom Penh</ion-option>
+				<ion-option value="preah-sihanouk">Preah Sihanouk</ion-option>
+				<ion-option value="kampong-cham">Kampong Cham</ion-option>
+				<ion-option value="siem-reap">Siem Reap</ion-option>
+				<ion-option value="battambang">Battambang</ion-option>
+				<ion-option value="kandal">Kandal</ion-option>
+				<ion-option value="banteay-meanchey">Banteay Meanchey</ion-option>
+				<ion-option value="kampong-chhnang">Kampong Chhnang</ion-option>
+				<ion-option value="kampong-speu">Kampong Speu</ion-option>
+				<ion-option value="kampong-thom">Kampong Thom</ion-option>
+				<ion-option value="kampot">Kampot</ion-option>
+				<ion-option value="kep">Kep</ion-option>
+				<ion-option value="koh-kong">Koh Kong</ion-option>
+				<ion-option value="kratie">Kratie</ion-option>
+				<ion-option value="mondulkiri">Mondulkiri</ion-option>
+				<ion-option value="oddar-meanchey">Otdar Meanchey</ion-option>
+				<ion-option value="pailin">Pailin</ion-option>
+				<ion-option value="preah-vihear">Preah Vihear</ion-option>
+				<ion-option value="prey-veng">Prey Veng</ion-option>
+				<ion-option value="pursat">Pursat</ion-option>
+				<ion-option value="ratanakiri">Ratanakiri</ion-option>
+				<ion-option value="stung-treng">Stung Treng</ion-option>
+				<ion-option value="svay-rieng">Svay Rieng</ion-option>
+				<ion-option value="takeo">Takeo</ion-option>
+				<ion-option value="tboung-khmum">Tboung Khmum</ion-option>
+			</ion-select>
+		</ion-item>
+
+		<ion-item>
+			<ion-label stacked>Minimum Price {{ minPrice }}</ion-label>
+
+			<ion-range min="0" max="20000" step="2000" snaps="true" color="secondary" [(ngModel)]="minPrice"></ion-range>
+		</ion-item>
+		<ion-item>
+			<ion-label stacked>Maximum Price: {{ maxPrice }}</ion-label>
+
+			<ion-range min="100000" max="1000000" step="100000" snaps="true" color="secondary" [(ngModel)]="maxPrice"></ion-range>
+		</ion-item>
+
+		<ion-item>
+			<ion-label>Sort By</ion-label>
+			<ion-select [(ngModel)]="sortBy" interface="popover">
+				<ion-option value="best">Best Match</ion-option>
+				<ion-option value="newest">Newest First</ion-option>
+				<ion-option value="oldest">Oldest First</ion-option>
+				<ion-option value="highest">Price: High - Low</ion-option>
+				<ion-option value="lowest">Price: Low - High</ion-option>
+			</ion-select>
+		</ion-item>
+
+
+	</ion-list>
+	<ion-list no-lines>
+		<ion-item>
+			<button (click)="dismiss()" padding ion-button block round>Submit</button>
+		</ion-item>
+	</ion-list>
+	
+	
+
+
+	
+
+</ion-content>
