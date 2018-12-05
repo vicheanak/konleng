@@ -4,9 +4,9 @@ This project is built for the purpose of practicing my skills, and future works 
 
 It's built under Ionic 3 with Firebase as the back-end server.
 
-![Imgur](https://i.imgur.com/rZyNh7k.jpg=100x200)
-![Imgur](https://i.imgur.com/21K6vJM.jpg)
-![Imgur](https://i.imgur.com/SOlyJQk.jpg)
+<img src="https://i.imgur.com/rZyNh7k.jpg" width="200">
+<img src="https://i.imgur.com/21K6vJM.jpg" width="200">
+<img src="https://i.imgur.com/SOlyJQk.jpg" width="200">
 
 ## Description
 Freshly design with easy navigation to search for properties in 25 cities and provinces in Cambodia. The feature of all real estates display on Google Map delivers a much greater experience for users who are looking for buy or rent properties in the preferably areas. The save search function would definitely help the user to read more detail information on later date. Users may as well follow the other members and receive notification alert once such members post a new property. Regarding to add and edit information, our team has made it to super easy like 1, 2, 3. Please go ahead and give it a try.
