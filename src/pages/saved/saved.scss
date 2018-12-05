@@ -1,4 +1,12 @@
 page-saved {
+	.listing-img {
+		width: 120px;
+		padding: 0px 0px 0px 7px;
+	}
+	.item ion-thumbnail {
+
+	}
+
 	.price{
 		font-weight: bold;
 		color: red;
@@ -6,12 +14,26 @@ page-saved {
 	}
 
 	h2{
-		line-height: 36px;
-	    font-size: 18px !important;
+		line-height: 25px;
+		font-size: 17px !important;
 	}
 
-	.type{
-		height: 20px;
-	 
+	.success-label{
+		font-size: 17px;
+	}
+
+	.success-img{
+		margin-top: 120px;
+		margin-bottom: 20px;
+		width: 95px;
+		height: 150px;
+	}
+
+	.modal-detail-label{
+		line-height: 20px;
+	}
+
+	.modal-detail-header{
+		line-height: 30px;
 	}
 }

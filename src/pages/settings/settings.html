@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>Settings</ion-title>
+    <ion-title>{{'SETTINGS' | translate}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -16,29 +16,29 @@
 <ion-content padding>
 	<ion-item>
 	  <ion-icon name='md-alert' item-start></ion-icon>
-	  <ion-label>Notification</ion-label>
+	  <ion-label>{{'NOTIFICATION' | translate}}</ion-label>
 	  <ion-toggle checked="true"></ion-toggle>
 	</ion-item>
 	
-	<ion-item>
+	<ion-item (click)="rate()">
 		<ion-icon name='ios-star-half' item-start></ion-icon>
-		Rate Us
+		{{'RATE_US' | translate}}
 		<ion-icon name='ios-arrow-forward' item-end></ion-icon>
 	</ion-item>
 	
 	<ion-item (click)="goContact()">
 		<ion-icon name='logo-facebook' item-start></ion-icon>
-		Contact Us
+		{{'CONTACT_US' | translate}}
 		<ion-icon name='ios-arrow-forward' item-end></ion-icon>
 	</ion-item>
 	<ion-item (click)="goPrivacyPolicy()">
 		<ion-icon name='md-lock' item-start></ion-icon>
-		Privacy Policy
+		{{'PRIVACY_POLICY' | translate}}
 		<ion-icon name='ios-arrow-forward' item-end></ion-icon>
 	</ion-item>
 	<ion-item (click)="goTermsOfUse()">
 		<ion-icon name='ios-hand' item-start></ion-icon>
-		Terms of Use
+		{{'TERMS_OF_USE' | translate}}
 		<ion-icon name='ios-arrow-forward' item-end></ion-icon>
 	</ion-item>
 </ion-content>

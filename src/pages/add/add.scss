@@ -4,14 +4,34 @@ page-add {
 	// ion-step:nth-child(1){
 
 	// }
-	ion-input.step3 {
+	ion-input.right-align {
 		input {
 			text-align: right;
 			/* IF YOU ALSO WANT TO PUSH PLACHEHOLDER TO THE RIGHT USE THE FOLLOWING, IF NOT JUST DELETE THE ::-webkit-input-placeholder*/
 			::-webkit-input-placeholder {
 				text-align: right;
 			}
+			
 		}
+	}
+
+	ion-input {
+		input {
+			
+			line-height: 30px;
+		}
+	}
+
+	.list-height{
+		max-height: 250px;
+		overflow-y: scroll;
+	}
+
+	.listing-img{
+		 object-fit: cover;
+		  width:80px;
+		  height:80px;
+		  border-radius: 15px;
 	}
 
 	ion-grid{
@@ -22,5 +42,23 @@ page-add {
 			}			
 		}	
 	}
+
+	ion-step-header .ionic-step-header-icon-active {
+		background-color: #001fa2;
+	}
+
+	ion-step-header .ionic-step-header-icon-active, .ionic-step-header-icon {
+		width: 35px;
+		height: 35px;
+		border-radius: 50%;
+		font-weight: bold;
+	}
+
+	ion-step-header .ionic-step-header-label-active {
+		color: rgba(123, 122, 122, 0.87);
+		font-weight: bold;
+		font-size: 16px;
+	}
+	
 	
 }

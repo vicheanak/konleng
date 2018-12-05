@@ -11,13 +11,9 @@ $font-path: "../assets/fonts";
 // http://ionicframework.com/docs/theming/rtl-support/
 $app-direction: ltr;
 
-@font-face {
-	font-family: Battambang;
-	src: url(../assets/fonts/Battambang-Regular.ttf) format("ttf");
-	font-weight: 200
-}
 
 @import "ionic.globals";
+@import url('https://fonts.googleapis.com/css?family=Battambang');
 
 
 // Shared Variables
@@ -40,7 +36,8 @@ $app-direction: ltr;
 
 $colors: (
   primary:    #00269f,
-  secondary:  #32db64,
+  twitter: 	#38A1F3,
+  secondary:  #0cc33f,
   danger:     #f53d3d,
   light:      #f4f4f4,
   dark:       #222

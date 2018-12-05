@@ -12,39 +12,40 @@ import { AddPage } from '../add/add';
  */
 
 
-@Component({
-  selector: 'page-confirmation',
-  templateUrl: 'confirmation.html',
-})
-export class ConfirmationPage {
+ @Component({
+   selector: 'page-confirmation',
+   templateUrl: 'confirmation.html',
+ })
+ export class ConfirmationPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+   constructor(public navCtrl: NavController, public navParams: NavParams) {
+   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ConfirmationPage');
-  }
+   ionViewDidEnter() {
+     let listingId = this.navParams.get('id');
 
-  ionViewWillLeave(){
-  	this.navCtrl.setRoot(AddPage);
-  }
+   }
 
-  goPreview(){
-  	const tabs = this.navCtrl.parent;
-	tabs.select(2)
-	  .then(() => tabs.getSelected().push(MyPropertiesPage, {}, { animate: false }))
-	  .then(() => tabs.getSelected().push(DetailPage, {}, { animate: false }))
-	  .then(() => this.navCtrl.popToRoot());
-  	
-  }
+   ionViewWillLeave(){
+     this.navCtrl.setRoot(AddPage);
+   }
 
-  goMyProperties(){
-  	const tabs = this.navCtrl.parent;
-	tabs.select(2)
-	  .then(() => tabs.getSelected().push(MyPropertiesPage, {}, { animate: false }))
-	  .then(() => this.navCtrl.popToRoot());
-  	
+   goPreview(){
+     const tabs = this.navCtrl.parent;
+     tabs.select(2)
+     .then(() => tabs.getSelected().push(MyPropertiesPage, {}, { animate: false }))
+     .then(() => tabs.getSelected().push(DetailPage, {}, { animate: false }))
+     .then(() => this.navCtrl.popToRoot());
+     
+   }
 
-  }
+   goMyProperties(){
+     const tabs = this.navCtrl.parent;
+     tabs.select(2)
+     .then(() => tabs.getSelected().push(MyPropertiesPage, {}, { animate: false }))
+     .then(() => this.navCtrl.popToRoot());
+     
 
-}
+   }
+
+ }

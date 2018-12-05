@@ -3,6 +3,8 @@ import { NavController } from 'ionic-angular';
 import {ListingPage} from '../listing/listing';
 import { TranslateService } from '@ngx-translate/core';
 import { Storage } from '@ionic/storage';
+import { ListingProvider } from '../../providers/listing/listing';
+import { ServiceProvider } from '../../providers/service/service';
 
 
 @Component({
@@ -12,38 +14,50 @@ import { Storage } from '@ionic/storage';
 export class SearchPage {
 
 	public queryText: string;
+  private provinces: any = [];
+  private provinceData: any = [];
+  private provinceDisplay: any = [];
 
   constructor(public navCtrl: NavController, 
   	public translate: TranslateService,
-  	private storage: Storage) {
+  	private storage: Storage,
+    private listingProvider: ListingProvider,
+    private serviceProvider: ServiceProvider) {
 
   	this.queryText = '';
 
+    
+
   }
 
-  goListing(){
-  	this.navCtrl.push(ListingPage);
+  ionViewWillEnter() {
+    this.listingProvider.getCounter().then((counter) => {
+      this.provinces = counter;
+    });
+
+   this.serviceProvider.transition();
+
+  }
+
+  doRefresh(refresher) {
+    this.listingProvider.getCounter().then((counter) => {
+      this.provinces = counter;
+      refresher.complete();
+    });
+  }
+
+  goListing(province){
+    this.navCtrl.push(ListingPage, {province: province}, {animate: false});
   }
 
   searchByKeyword(){
-  	console.log(this.queryText);
+    this.navCtrl.push(ListingPage, {keyword: this.queryText}, {animate: false});
   }
 
   switchLanguage(){
-  	this.storage.get('language').then((val) => {
-
-  		if (val == 'en'){
-  			this.translate.use('kh');		
-  			this.storage.set('language', 'kh');
-
-  		}
-  		else if(val == 'kh'){
-  			this.translate.use('en');
-  			this.storage.set('language', 'en');
-  		}
-  	});
+    this.serviceProvider.switchLanguage();
   }
 
-  
+
 
 }

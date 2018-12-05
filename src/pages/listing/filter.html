@@ -1,10 +1,11 @@
+
 <ion-header>
 	<ion-navbar color="primary">
 		<ion-title>
-			Filter
+			{{"FILTER" | translate}}
 		</ion-title>
 		<ion-buttons end (click)="dismiss()">
-			<button ion-button icon-only >
+			<button round ion-button icon-only >
 				<ion-icon name="close"></ion-icon>
 			</button>
 		</ion-buttons>
@@ -14,85 +15,75 @@
 <ion-content padding>
 	<ion-list>
 		<ion-item>
-			<ion-label floating>Keywords</ion-label>
-			<ion-input type="text"></ion-input>
-		</ion-item>
-		<ion-item>
-			<ion-label>Listing Type</ion-label>
-			<ion-select [(ngModel)]="listingType" interface="popover">
-				<ion-option value="sell">Sell</ion-option>
-				<ion-option value="rent">Rent</ion-option>
+			<ion-label>{{"SORT_BY" | translate}}</ion-label>
+			<ion-select [(ngModel)]="filter.sort_by" interface="popover">
+				<ion-option value="newest">{{"NEWEST" | translate}}</ion-option>
+				<ion-option value="oldest">{{"OLDEST" | translate}}</ion-option>
+				<ion-option value="highest">{{"MOST_EXPENSIVE" | translate}}</ion-option>
+				<ion-option value="lowest">{{"CHEAPEST" | translate}}</ion-option>
 			</ion-select>
 		</ion-item>
 		<ion-item>
-			<ion-label>Type</ion-label>
-			<ion-select [(ngModel)]="type" interface="popover">
-				<ion-option value="house">House</ion-option>
-				<ion-option value="apartment">Apartment</ion-option>
-				<ion-option value="land">Land</ion-option>
+			<ion-label floating>{{"KEYWORDS" | translate}}</ion-label>
+			<ion-input [(ngModel)]="filter.keyword" type="text"></ion-input>
+		</ion-item>
+		<ion-item>
+			<ion-label>{{"LISTING_TYPE" | translate}}</ion-label>
+			<ion-select [(ngModel)]="filter.listing_type" interface="popover">
+				<ion-option value="">{{"ANY" | translate}}</ion-option>
+				<ion-option value="sell">{{"SELL" | translate}}</ion-option>
+				<ion-option value="rent">{{"RENT" | translate}}</ion-option>
 			</ion-select>
 		</ion-item>
 		<ion-item>
-			<ion-label>Location</ion-label>
-			<ion-select [(ngModel)]="location" interface="popover">
-				<ion-option value="any">Any</ion-option>
-				<ion-option value="phnom-penh">Phnom Penh</ion-option>
-				<ion-option value="preah-sihanouk">Preah Sihanouk</ion-option>
-				<ion-option value="kampong-cham">Kampong Cham</ion-option>
-				<ion-option value="siem-reap">Siem Reap</ion-option>
-				<ion-option value="battambang">Battambang</ion-option>
-				<ion-option value="kandal">Kandal</ion-option>
-				<ion-option value="banteay-meanchey">Banteay Meanchey</ion-option>
-				<ion-option value="kampong-chhnang">Kampong Chhnang</ion-option>
-				<ion-option value="kampong-speu">Kampong Speu</ion-option>
-				<ion-option value="kampong-thom">Kampong Thom</ion-option>
-				<ion-option value="kampot">Kampot</ion-option>
-				<ion-option value="kep">Kep</ion-option>
-				<ion-option value="koh-kong">Koh Kong</ion-option>
-				<ion-option value="kratie">Kratie</ion-option>
-				<ion-option value="mondulkiri">Mondulkiri</ion-option>
-				<ion-option value="oddar-meanchey">Otdar Meanchey</ion-option>
-				<ion-option value="pailin">Pailin</ion-option>
-				<ion-option value="preah-vihear">Preah Vihear</ion-option>
-				<ion-option value="prey-veng">Prey Veng</ion-option>
-				<ion-option value="pursat">Pursat</ion-option>
-				<ion-option value="ratanakiri">Ratanakiri</ion-option>
-				<ion-option value="stung-treng">Stung Treng</ion-option>
-				<ion-option value="svay-rieng">Svay Rieng</ion-option>
-				<ion-option value="takeo">Takeo</ion-option>
-				<ion-option value="tboung-khmum">Tboung Khmum</ion-option>
+			<ion-label>{{"PROPERTY_TYPE" | translate}}</ion-label>
+			<ion-select [(ngModel)]="filter.property_type" interface="popover">
+				<ion-option value="">{{"ANY" | translate}}</ion-option>
+				<ion-option value="house">{{"HOUSE" | translate}}</ion-option>
+				<ion-option value="apartment">{{"APARTMENT" | translate}}</ion-option>
+				<ion-option value="land">{{"LAND" | translate}}</ion-option>
+			</ion-select>
+		</ion-item>
+		<ion-item>
+			<ion-label>{{"PROVINCE" | translate}}</ion-label>
+
+			<ion-select [(ngModel)]="filter.province" (ionChange)="provinceChange()" interface="popover">
+				
+				<ion-option *ngFor="let p of provinces" [value] = "p.id">{{p.id | translate}}</ion-option>
 			</ion-select>
 		</ion-item>
 
 		<ion-item>
-			<ion-label stacked>Minimum Price {{ minPrice }}</ion-label>
+			<ion-label>{{"DISTRICT" | translate}}</ion-label>
 
-			<ion-range min="0" max="20000" step="2000" snaps="true" color="secondary" [(ngModel)]="minPrice"></ion-range>
-		</ion-item>
-		<ion-item>
-			<ion-label stacked>Maximum Price: {{ maxPrice }}</ion-label>
-
-			<ion-range min="100000" max="1000000" step="100000" snaps="true" color="secondary" [(ngModel)]="maxPrice"></ion-range>
-		</ion-item>
-
-		<ion-item>
-			<ion-label>Sort By</ion-label>
-			<ion-select [(ngModel)]="sortBy" interface="popover">
-				<ion-option value="best">Best Match</ion-option>
-				<ion-option value="newest">Newest First</ion-option>
-				<ion-option value="oldest">Oldest First</ion-option>
-				<ion-option value="highest">Price: High - Low</ion-option>
-				<ion-option value="lowest">Price: Low - High</ion-option>
+			<ion-select [(ngModel)]="filter.district" interface="popover">
+				<ion-option value="">{{"ANY" | translate}}</ion-option>
+				<ion-option *ngFor="let d of districts" [value] = "d.id">{{d.id | translate}}</ion-option>
 			</ion-select>
 		</ion-item>
+
+
+		<ion-grid>
+			<ion-row>
+				<ion-col col-6>
+					
+					<ion-input type="number" placeholder="{{'MIN_PRICE' | translate}}" style="border: 1px solid grey" [(ngModel)]="filter.min_price" type="number"></ion-input>
+				</ion-col>
+				<ion-col col-6>
+					
+					<ion-input type="number"  placeholder="{{'MAX_PRICE' | translate}}" style="border: 1px solid grey"  [(ngModel)]="filter.max_price" type="number"></ion-input>
+				</ion-col>
+			</ion-row>
+		</ion-grid>
+
 
 
 	</ion-list>
-	<ion-list no-lines>
-		<ion-item>
-			<button (click)="dismiss()" padding ion-button block round>Submit</button>
-		</ion-item>
-	</ion-list>
+	
+	<div padding>
+		<button round (click)="search()" padding ion-button block>{{'SEARCH' | translate}}</button>
+	</div>
+	
 	
 	
 

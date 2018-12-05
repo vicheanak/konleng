@@ -1,35 +1,65 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef, ChangeDetectorRef, Renderer2 } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { EditPage } from '../edit/edit';
+import { ListingProvider } from '../../providers/listing/listing';
+import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 import { DetailPage } from '../detail/detail';
+import { ServiceProvider } from '../../providers/service/service';
 
 /**
- * Generated class for the MyPropertiesPage page.
+ * Generated class for the SavedPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
 
 
-@Component({
-  selector: 'page-my-properties',
-  templateUrl: 'my-properties.html',
-})
-export class MyPropertiesPage {
+ @Component({
+   selector: 'page-my-properties',
+   templateUrl: 'my-properties.html',
+ })
+ export class MyPropertiesPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+   private activeListings: any;
+   private inactiveListings: any;
+   public display: string = 'active';
+   private user: any;
+   constructor(public navCtrl: NavController, 
+     public navParams: NavParams,
+     private listingProvider: ListingProvider,
+     private sanitizer: DomSanitizer,
+     private cf: ChangeDetectorRef,
+     private serviceProvider: ServiceProvider) {
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad MyPropertiesPage');
-  }
+   }
+   ionViewWillEnter(){ this.serviceProvider.transition(); }
 
-  goEdit(){
-  	this.navCtrl.push(EditPage);
-  }
 
-  goDetail(){
-    this.navCtrl.push(DetailPage);
-  }
+   ionViewDidLoad() {
+     this.user = this.navParams.get('user');
+     
+     this.listingProvider.getUserListings(this.user.uid, 1).then((listings) => {
+       this.activeListings = listings;
+     });
+     this.listingProvider.getUserListings(this.user.uid, 0).then((listings) => {
+       this.inactiveListings = listings;
+     });
+   }
 
-}
+   segmentChanged(){
+     this.cf.detectChanges();
+     
+   }
+
+   getBackground(image) {
+     return this.sanitizer.bypassSecurityTrustStyle(`url(${image})`);
+   }
+
+   goDetail(listing){
+
+     this.navCtrl.push(DetailPage, {
+       listing: listing,
+       user_id: listing.user_id
+     }, {animate: false});
+   }
+
+ }

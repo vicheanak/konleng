@@ -14,3 +14,39 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+.detail-modal {
+	background: rgba(0, 0, 0, 0) !important;
+	// padding: 50% 10%  !important;
+	position: absolute;
+      width: 100% !important;
+      height: 150px !important;
+      top: calc(100% - (150px));
+      // left: calc(100% - (766px)) !important;
+}
+
+ion-title > .toolbar-title{
+	line-height: 40px;
+}
+
+ion-item > .item-inner > .input-wrapper > ion-label {
+    line-height: 30px;
+}
+ion-segment-button {
+    font-size: 15px !important;
+}
+
+.type{
+	height: 25px;
+	line-height: 25px;
+	text-transform: capitalize;
+
+}
+
+.tabs > .tabbar > .tab-button:nth-child(2) > .tab-button-icon {
+    background-color: #00269f;
+    color: white !important;
+    border-radius: 50%;
+    padding: 13px 16px;
+   background-size: 50px 50px !important;
+   // width: 10px !important;
+}

@@ -11,7 +11,7 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content >
 	<ion-grid>
 		<ion-row justify-content-center>
 			<img class="success-img" src="../assets/imgs/success.png">
@@ -20,15 +20,15 @@
 			<p class="next-label">Done! What's Next?</p>
 		</ion-row>
 	</ion-grid>
-	<ion-list no-lines>
-		<ion-item>
-			<button color="light" (click)="goPreview()" padding ion-button block round>Preview</button>
-		</ion-item>
-		<ion-item>
-			<button color="light" (click)="goMyProperties()" padding ion-button block round>My Properties</button>
-		</ion-item>
-		<ion-item>
-			<button (click)="dismiss()" padding ion-button block round>Add New One</button>
-		</ion-item>
-	</ion-list>
+	
+		<div padding>
+			<button round (click)="goPreview()"  ion-button block >Preview</button>
+		</div>
+		<div padding>
+			<button round (click)="goMyProperties()"  ion-button block >My Properties</button>
+		</div>
+		<div padding>
+			<button round (click)="dismiss()"  ion-button block >Add New One</button>
+		</div>
+	
 </ion-content>
