@@ -25,17 +25,17 @@ export class ServiceProvider {
   }
 
   transition(){
-     let options: NativeTransitionOptions = {
-       duration: 300,
-       slowdownfactor: 3,
-       slidePixels: 20,
-       iosdelay: 100,
-       androiddelay: 150,
-       fixedPixelsTop: 0,
-       fixedPixelsBottom: 60
-     };
+     // let options: NativeTransitionOptions = {
+     //   duration: 300,
+     //   slowdownfactor: 3,
+     //   slidePixels: 20,
+     //   iosdelay: 100,
+     //   androiddelay: 150,
+     //   fixedPixelsTop: 0,
+     //   fixedPixelsBottom: 60
+     // };
 
-     this.nativePageTransitions.fade(options);
+     // this.nativePageTransitions.fade(options);
    }
   
 

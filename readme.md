@@ -4,7 +4,9 @@ This project is built for the purpose of practicing my skills, and future works 
 
 It's built under Ionic 3 with Firebase as the back-end server.
 
-![Imgur](http://i.imgur.com/c7QHVQ3.gif)
+![Imgur](https://imgur.com/rZyNh7k)
+![Imgur](https://imgur.com/21K6vJM)
+![Imgur](https://imgur.com/SOlyJQk)
 
 ## Description
 Freshly design with easy navigation to search for properties in 25 cities and provinces in Cambodia. The feature of all real estates display on Google Map delivers a much greater experience for users who are looking for buy or rent properties in the preferably areas. The save search function would definitely help the user to read more detail information on later date. Users may as well follow the other members and receive notification alert once such members post a new property. Regarding to add and edit information, our team has made it to super easy like 1, 2, 3. Please go ahead and give it a try.
@@ -70,12 +72,12 @@ An alternative is to emulate the app on a device or upload it to the ionic cloud
 
 ## Bugs and Issues
 
-Have a bug or an issue with this template? [Open a new issue](https://github.com/kristofferandreasen/simple-ionic-3-app/issues) here on Github.
+Have a bug or an issue with this template? [Open a new issue](https://github.com/vicheanak/konleng/issues) here on Github.
 
 ## Creator
 
-The template was created by and is maintained by **[Kristoffer Andreasen](https://medium.com/@kristoffer_andreasen)**
+The template was created by and is maintained by **[Kristoffer Andreasen](https://medium.com/@vicheanak)**
 
 ## Copyright and License
 
-Copyright 2017 Kristoffer Andreasen. Code released under the [MIT](https://github.com/kristofferandreasen/simple-ionic-3-app/blob/master/LICENSE) license.
+Copyright 2018 Vannavy Vicheanak. Code released under the [MIT](https://github.com/vicheanak/konleng/blob/master/LICENSE) license.
