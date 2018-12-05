@@ -4,7 +4,7 @@ This project is built for the purpose of practicing my skills, and future works 
 
 It's built under Ionic 3 with Firebase as the back-end server.
 
-![Imgur](https://i.imgur.com/rZyNh7k.jpg)
+![Imgur](https://i.imgur.com/rZyNh7k.jpg=100x200)
 ![Imgur](https://i.imgur.com/21K6vJM.jpg)
 ![Imgur](https://i.imgur.com/SOlyJQk.jpg)
 
