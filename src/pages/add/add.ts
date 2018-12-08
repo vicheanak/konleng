@@ -74,16 +74,16 @@ import { ImagesProvider } from '../../providers/images/images';
  	private mapEnvironment: Environment;
  	public imgPreviews: any;
  	public listing: any = {
- 		listing_type: 'rent',
- 		property_type: 'land',
- 		province: 'battambang',
- 		district: 'bavel',
- 		title: 'fea',
- 		price: '32',
- 		description: 'fafa',
- 		bedrooms: '32',
- 		bathrooms: '32',
- 		size: '32',
+ 		listing_type: '',
+ 		property_type: '',
+ 		province: '',
+ 		district: '',
+ 		title: '',
+ 		price: '',
+ 		description: '',
+ 		bedrooms: '',
+ 		bathrooms: '',
+ 		size: '',
  		phone1: '',
  		phone2: '',
  		images: [],
@@ -218,7 +218,13 @@ import { ImagesProvider } from '../../providers/images/images';
  			lng: '',
  			thumb: '',
  		};
-
+ 		this.listing.user_id = this.user.uid;
+		this.listing.email = this.user.email;
+		this.listing.phone1 = this.user.phone1 ? this.user.phone1 : '';
+		this.listing.phone2 = this.user.phone2 ? this.user.phone2 : '';
+		this.listing.displayName = this.user.displayName ? this.user.displayName : '';
+		this.listing.userType = this.user.userType ? this.user.userType : '';
+		this.listing.agencyName = this.user.agencyName ? this.user.agencyName : '';
  		// 	this.listing.user_id = this.user.uid;
  		// this.listing.email = this.user.email;
  		// this.listing.phone1 = this.user.phone1 ? this.user.phone1 : '';

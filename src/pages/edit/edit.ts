@@ -123,7 +123,9 @@ import { ImagesProvider } from '../../providers/images/images';
  		{id: 6, src: '../assets/imgs/image_blank.png', hasImg: false}
  		] ;		
  	}
- 	ionViewWillEnter(){ this.serviceProvider.transition(); };
+ 	ionViewWillEnter(){ 
+ 		this.serviceProvider.transition(); 
+ 	};
  	compareProvince(province, district): boolean {
  		
  		return province && district ? province.id === district.province_id : province.id === district.province_id;
@@ -360,6 +362,10 @@ import { ImagesProvider } from '../../providers/images/images';
  			
  			this.listing = this.navParams.get('listing');
  			console.log('getListing', this.listing);
+ 			this.provinceChange();
+
+
+
  			this.listing.description = this.listing.description.replace(/<br \/>/g, "\n");
  			this.location = new LatLng(parseFloat(this.listing.lat), parseFloat(this.listing.lng));
 

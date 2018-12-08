@@ -9,6 +9,10 @@ page-edit {
 		}
 	}
 
+	.image-label > .item-inner {
+	    border-bottom: 0px !important;
+	}
+
 	.listing-img{
 		 object-fit: cover;
 		  width:80px;
