@@ -19,16 +19,16 @@
 			
 			<ion-list radio-group [(ngModel)]="listing.listing_type">
 
-			  
-			  <ion-item>
-			    <ion-label>{{'SELL' | translate}}</ion-label>
-			    <ion-radio value="sell"></ion-radio>
-			  </ion-item>
 
-			  <ion-item>
-			    <ion-label>{{'RENT' | translate}}</ion-label>
-			    <ion-radio value="rent"></ion-radio>
-			  </ion-item>
+				<ion-item>
+					<ion-label>{{'SELL' | translate}}</ion-label>
+					<ion-radio value="sell"></ion-radio>
+				</ion-item>
+
+				<ion-item>
+					<ion-label>{{'RENT' | translate}}</ion-label>
+					<ion-radio value="rent"></ion-radio>
+				</ion-item>
 
 
 			</ion-list>
@@ -45,21 +45,21 @@
 		<ion-step label="{{'PROPERTY_TYPE' | translate}}">
 			<ion-list radio-group [(ngModel)]="listing.property_type">
 
-			  
-			  <ion-item>
-			    <ion-label>{{'HOUSE' | translate}}</ion-label>
-			    <ion-radio value="house"></ion-radio>
-			  </ion-item>
 
-			  <ion-item>
-			    <ion-label>{{'LAND' | translate}}</ion-label>
-			    <ion-radio value="land"></ion-radio>
-			  </ion-item>
+				<ion-item>
+					<ion-label>{{'HOUSE' | translate}}</ion-label>
+					<ion-radio value="house"></ion-radio>
+				</ion-item>
 
-			  <ion-item>
-			    <ion-label>{{'APARTMENT' | translate}}</ion-label>
-			    <ion-radio value="apartment"></ion-radio>
-			  </ion-item>
+				<ion-item>
+					<ion-label>{{'LAND' | translate}}</ion-label>
+					<ion-radio value="land"></ion-radio>
+				</ion-item>
+
+				<ion-item>
+					<ion-label>{{'APARTMENT' | translate}}</ion-label>
+					<ion-radio value="apartment"></ion-radio>
+				</ion-item>
 
 
 			</ion-list>
@@ -73,10 +73,10 @@
 		<ion-step label="{{'PROVINCE' | translate}}" description="">
 			
 			<ion-list class="list-height" (ionChange)="provinceChange()" radio-group [(ngModel)]="listing.province">
-			  <ion-item *ngFor="let p of provinces">
-			    <ion-label>{{p.id | translate}}</ion-label>
-			    <ion-radio value="{{p.id}}"></ion-radio>
-			  </ion-item>
+				<ion-item *ngFor="let p of provinces">
+					<ion-label>{{p.id | translate}}</ion-label>
+					<ion-radio value="{{p.id}}"></ion-radio>
+				</ion-item>
 			</ion-list>
 
 			<div>
@@ -90,10 +90,10 @@
 		<ion-step label="{{'DISTRICT' | translate}}" description="">
 			
 			<ion-list class="list-height" radio-group [(ngModel)]="listing.district">
-			  <ion-item *ngFor="let d of districts">
-			    <ion-label>{{d.id | translate}}</ion-label>
-			    <ion-radio value="{{d.id}}"></ion-radio>
-			  </ion-item>
+				<ion-item *ngFor="let d of districts">
+					<ion-label>{{d.id | translate}}</ion-label>
+					<ion-radio value="{{d.id}}"></ion-radio>
+				</ion-item>
 			</ion-list>
 
 			<div>
@@ -188,8 +188,18 @@
 		<ion-step label="{{'IMAGES' | translate}}" description="">
 			<ion-grid>
 				<ion-row>
-					<ion-col *ngFor="let key of objectKeys(imgPreviews)" (click)="addImage(key)" col-4 style="background-size:cover; background-position: center bottom;border: 2px solid white;"><img class="listing-img" [src]="imgPreviews[key].src"></ion-col>
+					<ion-col *ngFor="let key of objectKeys(imgPreviews)" col-4 style="background-size:cover; background-position: center bottom;border: 2px solid white;">
+						<label ion-item no-padding class="image-label">
+							<ion-label id="profile_image" color="primary" stacked><img class="listing-img" [src]="imgPreviews[key].src"></ion-label>
+							<ion-input style="display: none" type="file" accept="image/*" (change)="addImage($event, key)"></ion-input>
+						</label>
+					</ion-col>
 				</ion-row>
+				<!-- <ion-row>
+					<ion-col *ngFor="let key of objectKeys(imgPreviews)" (click)="addImage(key)" col-4 style="background-size:cover; background-position: center bottom;border: 2px solid white;">
+						<img class="listing-img" [src]="imgPreviews[key].src">
+					</ion-col>
+				</ion-row> -->
 			</ion-grid>
 			<div>
 				<ion-row justify-content-between>

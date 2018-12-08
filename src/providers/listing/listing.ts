@@ -572,9 +572,14 @@ export class ListingProvider {
 			this.listingsCollection.get().subscribe((data) => {
 				let size = data.size + 1;
 				listing.property_id = size;
+				let tmpImages = listing.images;
+				listing.images = [];
 				this.addCount(listing.province, listing.listing_type);
+				console.log('id', id);
+				console.log('listing', listing);
 				this.set(id, listing).then((id) => {
 					listing.id = id;
+					listing.images = tmpImages;
 					resolve(listing);
 				}).catch((msg) => {
 					reject(msg);
@@ -591,6 +596,34 @@ export class ListingProvider {
 			});
 		});
 	}
+	uploadImagesToFirestore(id, dataUrl){
+		return new Promise<Object>((resolve, reject) => {
+			const currentTime = new Date().getTime();
+			const storageRef: AngularFireStorageReference = this.afStorage.ref(`listings/${id}/images/${currentTime}.jpg`);
+			if (document.URL.startsWith('http')){
+				storageRef.put(dataUrl).then((snapshot) => {
+					storageRef.getDownloadURL().subscribe((url) => {
+						resolve(url);
+					})
+				}).catch((msg) => {
+					reject(msg);
+				});
+			}
+			else{
+				storageRef.putString(dataUrl, 'data_url', {
+					contentType: 'image/jpeg'
+				}).then(() => {
+					storageRef.getDownloadURL().subscribe((url: any) => {
+						resolve(url);
+					});
+				}).catch((msg) => {
+					reject(msg);
+				});
+			}
+			
+			
+		});
+	}
 	updateImages(id, images){
 		return new Promise<Object>((resolve, reject) => {
 			let imagesArray = [];
@@ -601,30 +634,29 @@ export class ListingProvider {
 			for(let i = 0; i < images.length; i ++){
 				let image = images[i];
 
-				let filename = image.substring(image.lastIndexOf('/')+1);
- 				filename = filename.split('?')[0];
-    			let path =  image.substring(0,image.lastIndexOf('/')+1);
-				
-				this.file.readAsDataURL(path, filename).then((dataUrl) => {
-					const currentTime = new Date().getTime();
-					const storageRef: AngularFireStorageReference = this.afStorage.ref(`listings/${id}/images/${currentTime}.jpg`);
-					storageRef.putString(dataUrl, 'data_url', {
-						contentType: 'image/jpeg'
-					}).then(() => {
-						// observableBatch.push(
-						storageRef.getDownloadURL().subscribe((url: any) => {
+				if (document.URL.startsWith('http')){
+					this.uploadImagesToFirestore(id, image).then((url) => {
+						countImg ++;
+						imagesArray.push(url);
+					}).catch((error) => {
+						console.log('ERROR HTTP', error);
+					});
+				}
+				else{
+					let filename = image.substring(image.lastIndexOf('/')+1);
+	 				filename = filename.split('?')[0];
+	    			let path =  image.substring(0,image.lastIndexOf('/')+1);
+					this.file.readAsDataURL(path, filename).then((dataUrl) => {
+						this.uploadImagesToFirestore(id, dataUrl).then((url) => {
 							countImg ++;
-							
 							imagesArray.push(url);
 						});
-						// );
-					}).catch((msg) => {
-						console.error("ERROR UPDATE_LISTING_IMAGES", JSON.stringify(msg));
-					});
-				}).catch((error) => {
-					console.error("ERORR UPLOAD", JSON.stringify(error));
-				})
+					}).catch((error) => {
+						console.error("ERORR UPLOAD", JSON.stringify(error));
+					})
+				}
 			}
+
 			let myInterval = setInterval(() => {
 				if (totalImg == countImg){
 					clearInterval(myInterval);

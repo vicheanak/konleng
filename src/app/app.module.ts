@@ -80,6 +80,7 @@ import { Device } from '@ionic-native/device';
 
 import { IonicImageViewerModule, ImageViewerComponent, ImageViewerController } from 'ionic-img-viewer';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
+import { ImagesProvider } from '../providers/images/images';
 
 
 @NgModule({
@@ -186,7 +187,8 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation';
     NativePageTransitions,
     Device,
     ImageViewerController,
-    ScreenOrientation
+    ScreenOrientation,
+    ImagesProvider
   ]
 })
 export class AppModule {

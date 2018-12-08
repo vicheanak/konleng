@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
+
+
 import * as firebase from 'firebase/app';
 import AuthProvider = firebase.auth.AuthProvider;
 import { Storage } from '@ionic/storage';
@@ -11,7 +13,7 @@ import { FirebaseAuthentication } from '@ionic-native/firebase-authentication';
 import { Observable, from, forkJoin } from 'rxjs';
 
 import { map, tap, take, switchMap, mergeMap, expand, takeWhile } from 'rxjs/operators';
-
+import { Platform } from 'ionic-angular';
 import { AngularFirestore,
   AngularFirestoreDocument,
   AngularFirestoreCollection,
@@ -21,7 +23,12 @@ import { AngularFirestore,
   DocumentSnapshotExists 
 } from 'angularfire2/firestore';
 
+
+
 import { File } from '@ionic-native/file';
+
+import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook'
+
 export interface User { 
   uid: string;
   displayName: string;
@@ -45,14 +52,18 @@ export class AuthServiceProvider {
   private devices: Observable<Device[]>;
   private devicesCollection: AngularFirestoreCollection<Device>;
 
-  constructor(public http: HttpClient, 
+  constructor(
+    public facebook: Facebook,
+    public http: HttpClient, 
     public afAuth: AngularFireAuth,
     public firebaseAuth: FirebaseAuthentication,
     private storage: Storage,
     private afStore: AngularFirestore,
     private afStorage: AngularFireStorage,
-    private file: File
+    private file: File,
+    private platform: Platform
     ) {
+
 
 
     this.usersCollection = this.afStore.collection<User>('users');
@@ -118,6 +129,69 @@ export class AuthServiceProvider {
         }
       })
     });
+  }
+
+  getRedirectResult(){
+    this.afAuth.auth.getRedirectResult().then((afResult) => {
+      if (afResult.credential){
+        let fb_token = afResult.credential['accessToken']; 
+        let fb_user = afResult.user;
+        this.updateUserLogin(fb_user).then((userData) => {
+          console.log(userData);
+        });
+      }
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
+  loginWithFacebook(){
+
+    return new Promise<Object>((resolve, reject) => {
+      if (document.URL.startsWith('http')){
+        let provider = new firebase.auth.FacebookAuthProvider();
+        provider.setCustomParameters({
+          'display': 'popup'
+        });
+
+        this.afAuth.auth.signInWithRedirect(provider).then(() => {
+          
+        }).catch((error) => {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          var email = error.email;
+          var credential = error.credential;
+          console.log('errorCode', errorCode);
+          console.log('errorMessage', errorMessage);
+          console.log('email', email);
+          console.log('credential', credential);
+        })
+      } else {
+        this.facebook.login(['public_profile', 'email'])
+        .then( (res: FacebookLoginResponse) => {
+
+          if(res.status == "connected") {
+            var fb_id = res.authResponse.userID;
+            var fb_token = res.authResponse.accessToken;
+            this.signInWithFacebook(fb_token).then((user) => {
+              resolve(user);
+            });
+          } 
+          else {
+
+            console.log("An error occurred...");
+
+          }
+
+        })
+        .catch((e) => {
+          console.log('Error logging into Facebook', e);
+        });
+      }
+
+    });
+
+
   }
 
   signInWithFacebook(token) {
@@ -218,7 +292,7 @@ export class AuthServiceProvider {
           let filename = image.substring(image.lastIndexOf('/')+1);
           filename = filename.split('?')[0];
           let path =  image.substring(0,image.lastIndexOf('/')+1);
-          
+
           this.file.readAsDataURL(path, filename).then((dataUrl) => {
             const currentTime = new Date().getTime();
             const storageRef: AngularFireStorageReference = this.afStorage.ref(`users/${user.uid}/images/${currentTime}.jpg`);
@@ -236,7 +310,7 @@ export class AuthServiceProvider {
                   resolve(this.user);
                 });
               });
-              
+
             }).catch((msg) => {
               console.error("ERROR UPDATE_LISTING_IMAGES", JSON.stringify(msg));
             });
@@ -247,7 +321,7 @@ export class AuthServiceProvider {
 
         }
 
-        
+
       });
 
 

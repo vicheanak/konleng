@@ -17,6 +17,7 @@ export class SearchPage {
   private provinces: any = [];
   private provinceData: any = [];
   private provinceDisplay: any = [];
+  private isWeb: boolean = false;
 
   constructor(public navCtrl: NavController, 
   	public translate: TranslateService,
@@ -26,6 +27,9 @@ export class SearchPage {
 
   	this.queryText = '';
 
+    if (document.URL.startsWith('http')){
+      this.isWeb = true;
+    }
     
 
   }

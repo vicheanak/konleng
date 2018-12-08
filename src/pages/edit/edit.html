@@ -16,7 +16,13 @@
 <ion-content padding>
 	<ion-grid>
 		<ion-row>
-			<ion-col *ngFor="let key of objectKeys(imgPreviews)" (click)="addImage(key)" col-4 style="background-size:cover; background-position: center bottom;border: 2px solid white;"><img class="listing-img" [src]="imgPreviews[key].src"></ion-col>
+			<ion-col *ngFor="let key of objectKeys(imgPreviews)" col-4 style="background-size:cover; background-position: center bottom;border: 2px solid white;">
+				<label ion-item no-padding class="image-label">
+					<ion-label id="profile_image" color="primary" stacked><img class="listing-img" [src]="imgPreviews[key].src"></ion-label>
+					<ion-input style="display: none" type="file" accept="image/*" (change)="addImage($event, key)"></ion-input>
+				</label>
+			</ion-col>
+			
 		</ion-row>
 	</ion-grid>
 	<ion-list>
@@ -88,7 +94,7 @@
 		</ion-item>
 		<ion-item>
 			<ion-label stacked>{{"ADDRESS" | translate}}: {{latLng}}</ion-label>
-			<ion-textarea rows="3" maxLength="500" [(ngModel)]="listing.address"></ion-textarea>
+			<ion-textarea (ionChange)="runTimeChange()" rows="3" maxLength="500" [(ngModel)]="listing.address"></ion-textarea>
 		</ion-item>
 	</ion-list>
 

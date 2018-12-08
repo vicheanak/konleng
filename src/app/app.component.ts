@@ -12,6 +12,7 @@ import { Storage } from '@ionic/storage';
 import { AuthServiceProvider } from '../providers/auth/auth';
 import { ServiceProvider } from '../providers/service/service';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
+import { Environment } from '@ionic-native/google-maps';
 
 @Component({
   templateUrl: 'app.html'
@@ -30,13 +31,25 @@ export class MyApp {
     private serviceProvider: ServiceProvider,
     private screenOrientation: ScreenOrientation) {
 
+    this.auth.getRedirectResult();
 
 
     platform.ready().then(() => {
 
+      if (document.URL.startsWith('http')){
+        Environment.setEnv({
+          API_KEY_FOR_BROWSER_RELEASE: "AIzaSyC48OCw2LMjdmNeuWmGmRLk2ayuZLOaxV8",
+          API_KEY_FOR_BROWSER_DEBUG: "AIzaSyC48OCw2LMjdmNeuWmGmRLk2ayuZLOaxV8"
+        });
+      }
+
       statusBar.styleDefault();
       
-      splashScreen.hide();
+      setTimeout(() => {
+        splashScreen.hide();  
+      }, 100);
+      
+
       this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
       translate.setDefaultLang(this.currentLang);
       this.serviceProvider.getLanguage().then((val) => {
@@ -53,20 +66,6 @@ export class MyApp {
 
     });
 
-
-
-    this.auth.afAuth.authState
-    .subscribe(
-      user => {
-        if (user) {
-          console.log('app.component.ts - user is logged in', user);
-        } else {
-          console.log('app.component.ts - not login');
-        }
-      },
-      () => {
-        console.log('app.component.ts - error login');
-      });
   }
 
   

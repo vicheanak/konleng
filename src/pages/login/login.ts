@@ -251,31 +251,12 @@ import { ServiceProvider } from '../../providers/service/service';
  			this.navCtrl.push(MePage, {}, {animate: false});
  		}
  	}
-
  	loginWithFacebook(){
  		this.presentLoading();
- 		this.facebook.login(['public_profile', 'email'])
- 		.then( (res: FacebookLoginResponse) => {
-
- 			if(res.status == "connected") {
- 				var fb_id = res.authResponse.userID;
- 				var fb_token = res.authResponse.accessToken;
- 				this.auth.signInWithFacebook(fb_token).then((user) => {
- 					this.dismissLoading();
- 					this.navPop();
-
- 				});
- 			} 
- 			else {
-
- 				console.log("An error occurred...");
-
- 			}
-
+ 		this.auth.loginWithFacebook().then(() => {
+ 			this.dismissLoading();
+ 			this.navPop();
  		})
- 		.catch((e) => {
- 			console.log('Error logging into Facebook', e);
- 		});
  	}
 
  }

@@ -35,6 +35,7 @@ import {MyPropertiesPage} from '../my-properties/my-properties';
 import { DetailPage } from '../detail/detail';
 import { IonicStepperComponent } from 'ionic-stepper';
 import { ServiceProvider } from '../../providers/service/service';
+import { ImagesProvider } from '../../providers/images/images';
 /**
  * Generated class for the AddPage page.
  *
@@ -58,6 +59,7 @@ import { ServiceProvider } from '../../providers/service/service';
  	public districts: any = [];
  	public all_districts: any = [];
  	public imgPreviews: any;
+ 	private timer: any;
  	public listing: any = {
  		listing_type: 'sell',
  		property_type: 'apartment',
@@ -106,7 +108,8 @@ import { ServiceProvider } from '../../providers/service/service';
  		private file: File,
  		private loadingCtrl: LoadingController,
  		private alertCtrl: AlertController,
- 		private serviceProvider: ServiceProvider) {
+ 		private serviceProvider: ServiceProvider,
+ 		private imagesProvider: ImagesProvider) {
  		this.imgPreview = '../assets/imgs/image_blank.jpg';
  		
  		this.provinces = this.listingProvider.getProvinces();
@@ -156,25 +159,38 @@ import { ServiceProvider } from '../../providers/service/service';
  	}
 
  	dismissLoading(listing){
-
  		try{
  			this.myLoading.dismiss();
- 			this.navCtrl.pop({animate: false});
- 			this.navCtrl.pop({animate: false});
- 			this.navCtrl.push(DetailPage, {
- 				listing: listing,
- 				user_id: listing.user_id
- 			}, {animate: false});
- 			this.cf.detectChanges();
  			
- 			// const tabs = this.navCtrl.parent;
- 			// tabs.select(2)
- 			// .then(() => tabs.getSelected().push(MyPropertiesPage, {}, { animate: false }))
- 			// .then(() => tabs.getSelected().push(DetailPage, {listing: listing, user_id: listing.user_id}, { animate: false }))
- 			// .then(() => this.navCtrl.popToRoot());
+ 			console.log('listing edit', listing);
+
+ 			const tabs = this.navCtrl.parent;
+ 			tabs.select(2)
+ 			.then(() => tabs.getSelected().push(MyPropertiesPage, {user: this.user}, { animate: false }))
+ 			.then(() => tabs.getSelected().push(DetailPage, {listing: listing, user_id: listing.user_id}, { animate: false }))
+ 			.then(() => this.navCtrl.popToRoot());
  		}catch(e){
 
  		}
+
+ 		// try{
+ 		// 	this.myLoading.dismiss();
+ 		// 	this.navCtrl.pop({animate: false});
+ 		// 	this.navCtrl.pop({animate: false});
+ 		// 	this.navCtrl.push(DetailPage, {
+ 		// 		listing: listing,
+ 		// 		user_id: listing.user_id
+ 		// 	}, {animate: false});
+ 		// 	this.cf.detectChanges();
+ 			
+ 		// 	// const tabs = this.navCtrl.parent;
+ 		// 	// tabs.select(2)
+ 		// 	// .then(() => tabs.getSelected().push(MyPropertiesPage, {}, { animate: false }))
+ 		// 	// .then(() => tabs.getSelected().push(DetailPage, {listing: listing, user_id: listing.user_id}, { animate: false }))
+ 		// 	// .then(() => this.navCtrl.popToRoot());
+ 		// }catch(e){
+
+ 		// }
  	}
 
  	dismissDeleteLoading(){
@@ -219,6 +235,7 @@ import { ServiceProvider } from '../../providers/service/service';
 
 
  	getPhoto(sourceType, key) {
+
  		if (sourceType == 'camera'){
  			sourceType = this.camera.PictureSourceType.CAMERA;
  		}
@@ -259,51 +276,78 @@ import { ServiceProvider } from '../../providers/service/service';
  	changelisting_type(listing_type){
  		this.listing.listing_type = listing_type;
  	}
- 	addImage(key) {
- 		this.actionSheetButtons = [
- 		{
- 			text: 'Camera',
- 			handler: () => {
- 				this.getPhoto('camera', key);
- 			}
- 		},{
- 			text: 'Gallery',
- 			handler: () => {
- 				this.getPhoto('gallery', key);
- 			}
- 		}
- 		];
- 		this.actionSheetTitle = 'Add Image';
- 		if (this.imgPreviews[key]['hasImg']){
- 			this.actionSheetTitle = 'Edit Image';
- 			this.actionSheetButtons.push({
- 				text: 'Delete',
- 				role: 'destructive',
- 				handler: () => {
- 					this.imgPreviews[key]['hasImg'] = false;
- 					this.imgPreviews[key]['src'] = '../assets/imgs/image_blank.png';
- 					this.listing.images.splice(key, 1);
-
- 					
- 				}
+ 	addImage(event, key) {
+ 		if (document.URL.startsWith('http')){
+ 			this.imagesProvider.handleImageSelection(event).subscribe((res) =>{
+				this.listing.images[key] = event.target.files[0];
+				this.imgPreviews[key].src = res;
+				this.imgPreviews[key]['hasImg'] = true;
+ 			}, (error) =>{
+ 				console.error(error);
  			});
  		}
- 		const actionSheet = this.actionSheetCtrl.create({
- 			title: this.actionSheetTitle,
- 			buttons: this.actionSheetButtons
- 		});
- 		actionSheet.present();
+ 		else{
+ 			this.actionSheetButtons = [
+ 			{
+ 				text: 'Camera',
+ 				handler: () => {
+ 					this.getPhoto('camera', key);
+ 				}
+ 			},{
+ 				text: 'Gallery',
+ 				handler: () => {
+ 					this.getPhoto('gallery', key);
+ 				}
+ 			}
+ 			];
+ 			this.actionSheetTitle = 'Add Image';
+ 			if (this.imgPreviews[key]['hasImg']){
+ 				this.actionSheetTitle = 'Edit Image';
+ 				this.actionSheetButtons.push({
+ 					text: 'Delete',
+ 					role: 'destructive',
+ 					handler: () => {
+ 						this.imgPreviews[key]['hasImg'] = false;
+ 						this.imgPreviews[key]['src'] = '../assets/imgs/image_blank.png';
+ 						this.listing.images.splice(key, 1);
+
+
+ 					}
+ 				});
+ 			}
+ 			const actionSheet = this.actionSheetCtrl.create({
+ 				title: this.actionSheetTitle,
+ 				buttons: this.actionSheetButtons
+ 			});
+ 			actionSheet.present();
+ 		}
+ 		
  	}
  	getGeocoder(location){
- 		let geoCoderOptions: NativeGeocoderOptions = {
- 			useLocale: true,
- 			maxResults: 5
- 		};
- 		this.nativeGeocoder.forwardGeocode(location + ', Cambodia', geoCoderOptions)
- 		.then((coordinates: NativeGeocoderForwardResult[]) => {
- 			this.location = new LatLng(parseFloat(coordinates[0].latitude), parseFloat(coordinates[0].longitude));
+
+ 		if (document.URL.startsWith('http')){
+ 			let loc = location + ', Cambodia';
+ 			this.serviceProvider.getGeocode(loc).then((coordinates) => {
+ 				this.location = new LatLng(parseFloat(coordinates['lat']), parseFloat(coordinates['lng']));
+ 				let options = {
+ 					target: this.location,
+ 					zoom: 14,
+ 				};
+ 				this.map.moveCamera(options);
+ 			}).catch((err) => {
+ 				console.error('err', err);
+ 			});	
  		}
- 		)
+ 		else{
+ 			let geoCoderOptions: NativeGeocoderOptions = {
+ 				useLocale: true,
+ 				maxResults: 5
+ 			};
+ 			this.nativeGeocoder.forwardGeocode(location + ', Cambodia', geoCoderOptions)
+ 			.then((coordinates: NativeGeocoderForwardResult[]) => {
+ 				this.location = new LatLng(parseFloat(coordinates[0].latitude), parseFloat(coordinates[0].longitude));
+ 			})
+ 		}
  		
  	}
  	provinceChange(){
@@ -362,35 +406,24 @@ import { ServiceProvider } from '../../providers/service/service';
  				this.map.on(GoogleMapsEvent.CAMERA_MOVE_END).subscribe((params) => {
  					this.listing.lat = params[0]['target']['lat'].toFixed(6);
  					this.listing.lng = params[0]['target']['lng'].toFixed(6);
- 					this.latLng = params[0]['target']['lat'].toFixed(6) + ',' + params[0]['target']['lng'].toFixed(6);
- 					this.latLng = this.latLng.toString();
- 					let geoCoderOptions: NativeGeocoderOptions = {
- 						useLocale: true,
- 						maxResults: 5
- 					};
- 					this.nativeGeocoder.reverseGeocode(params[0]['target']['lat'], params[0]['target']['lng'], geoCoderOptions)
- 					.then((result: NativeGeocoderReverseResult[]) => {
- 						let province = result[0]['administrativeArea'];
- 						let district = result[0]['subAdministrativeArea'];
- 						let commune = result[0]['subLocality'] == '' ? result[0]['locality'] : result[0]['subLocality'];
- 						let street = result[0]['thoroughfare'];
- 						let houseNo = result[0]['subThoroughfare'];
- 						let address = [];
- 						address.push(houseNo);
- 						address.push(street);
- 						address.push(commune);
- 						address.push(district);
- 						address.push(province);
- 						address = address.filter(v=>v!='');
- 						this.listing.address = address.join(', ');
- 						this.cf.detectChanges();
- 					})
  					
  					// this.listing.address = 
  					this.cf.detectChanges();
  				});
  			});
  		});
+ 	}
+
+ 	runTimeChange(address){
+ 		if (this.timer) {
+ 			clearTimeout(this.timer);
+ 		}
+ 		this.timer = setTimeout(() => {
+
+ 			if (this.listing.address){
+ 				this.getGeocoder(this.listing.address);		
+ 			}
+ 		}, 500);
  	}
  	selectChange(e) {
  		
@@ -410,16 +443,31 @@ import { ServiceProvider } from '../../providers/service/service';
  			this.tmpCloudImages = [];
 
  			for (let i = 0; i < this.listing.images.length; i ++){
- 				if (this.listing.images[i].indexOf('firebasestorage.googleapis.com') > 0){
- 					this.tmpCloudImages.push(this.listing.images[i]);
- 					delete this.listing.images[i];
+ 				if (document.URL.startsWith('http')){
+ 					let type = typeof this.listing.images[i];
+ 					if (type == 'string'){
+ 						if (this.listing.images[i].indexOf('firebasestorage.googleapis.com') > 0){
+		 					this.tmpCloudImages.push(this.listing.images[i]);
+		 					delete this.listing.images[i];
+		 				}
+ 					}
  				}
+ 				else{
+ 					if (this.listing.images[i].indexOf('firebasestorage.googleapis.com') > 0){
+	 					this.tmpCloudImages.push(this.listing.images[i]);
+	 					delete this.listing.images[i];
+	 				}
+ 				}
+ 				
  			}
+
  			this.listing.images = this.listing.images.filter(String);
 
 
+
  			if (this.listing.images.length > 0){
- 				console.log('this.listing.images ==> ', this.listing.images);
+
+
  				this.listingProvider.updateImages(this.listing.id, this.listing.images).then((imgs) => {
  					
  					this.listing.images = this.tmpCloudImages.concat(imgs);
@@ -431,7 +479,6 @@ import { ServiceProvider } from '../../providers/service/service';
  				}).catch((err) => {
  					
  				});
-
  			}
  			else if (this.tmpCloudImages.length > 0) {
  				this.listing.images = this.tmpCloudImages;

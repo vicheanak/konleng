@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef, ChangeDetectorRef, Renderer2 } from '@angular/core';
-import { NavController, LoadingController, Events, Content, NavParams, Platform, ModalController, ViewController, ActionSheetController } from 'ionic-angular';
+import { AlertController, NavController, LoadingController, Events, Content, NavParams, Platform, ModalController, ViewController, ActionSheetController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
 
 import { Storage } from '@ionic/storage';
@@ -36,6 +36,7 @@ import { File } from '@ionic-native/file';
 import {MyPropertiesPage} from '../my-properties/my-properties';
 import { DetailPage } from '../detail/detail';
 import { IonicStepperComponent } from 'ionic-stepper';
+import { ImagesProvider } from '../../providers/images/images';
 
 
 /**
@@ -62,19 +63,27 @@ import { IonicStepperComponent } from 'ionic-stepper';
  	public provinces: any = [];
  	public districts: any = [];
  	private timer: any;
- 	
+ 	private isWeb: boolean = false;
+
+ 	public image : string;
+
+ 	public isSelected : boolean 		=	false;
+
+ 	private _SUFFIX : string;
+
+ 	private mapEnvironment: Environment;
  	public imgPreviews: any;
  	public listing: any = {
- 		listing_type: '',
- 		property_type: '',
- 		province: '',
- 		district: '',
- 		title: '',
- 		price: '',
- 		description: '',
- 		bedrooms: '',
- 		bathrooms: '',
- 		size: '',
+ 		listing_type: 'rent',
+ 		property_type: 'land',
+ 		province: 'battambang',
+ 		district: 'bavel',
+ 		title: 'fea',
+ 		price: '32',
+ 		description: 'fafa',
+ 		bedrooms: '32',
+ 		bathrooms: '32',
+ 		size: '32',
  		phone1: '',
  		phone2: '',
  		images: [],
@@ -112,11 +121,16 @@ import { IonicStepperComponent } from 'ionic-stepper';
  		private file: File,
  		private loadingCtrl: LoadingController,
  		public events: Events,
- 		private serviceProvider: ServiceProvider) {
+ 		private serviceProvider: ServiceProvider,
+ 		private imagesProvider: ImagesProvider,
+ 		private alertCtrl: AlertController) {
  		this.imgPreview = '../assets/imgs/image_blank.jpg';
  		this.location = new LatLng(11.556492, 104.934909);
  		this.provinces = this.listingProvider.getProvinces();
 
+ 		if (document.URL.startsWith('http')){
+ 			this.isWeb = true;
+ 		}
 
  		this.imgPreviews = [
  		{id: 1, src: '../assets/imgs/image_blank.png', hasImg: false},
@@ -221,8 +235,67 @@ import { IonicStepperComponent } from 'ionic-stepper';
  		];
  	}
 
+ 	changeListener($event) : void {
+ 		this.file = $event.target.files[0];
+
+ 	}
+
+ 	saveProfile_click() {
+ 		console.log("saveProfile_click", this.file);
+ 		// Add your code here
+
+ 	}
+
+ 	uploadProfileImage(){
+ 		console.log("uploadProfileImage", this.file);
+
+ 	}
+
+ 	
+
+
+
+ 	uploadFile() : void
+ 	{
+ 		this.imagesProvider
+ 		.uploadImageSelection(this.image,
+ 			this._SUFFIX)
+ 		.subscribe((res) =>
+ 		{
+ 			this.displayAlert(res.message);
+ 		},
+ 		(error : any) =>
+ 		{
+ 			console.dir(error);
+ 			this.displayAlert(error.message);
+ 		});
+ 	}
+
+ 	presentAlert(title, msg) {
+ 		const prompt = this.alertCtrl.create({
+ 			title: title,
+ 			message: msg,
+ 			buttons: [
+ 			{
+ 				text: 'Ok',
+ 				handler: data => {
+ 					console.log('Saved clicked', JSON.stringify(data));
+ 				}
+ 			}
+ 			]
+ 		});
+ 		prompt.present();
+ 	}
+
+ 	displayAlert(message : string) : void
+ 	{
+ 		this.presentAlert('Got it', 'Upload');
+ 	}
+
 
  	getPhoto(sourceType, key) {
+
+
  		if (sourceType == 'camera'){
  			sourceType = this.camera.PictureSourceType.CAMERA;
  		}
@@ -259,60 +332,103 @@ import { IonicStepperComponent } from 'ionic-stepper';
  		}).catch((error) => {
  			console.error('ERROR readData', error);
  		});
+
+
+
+
+
+
  	}
  	changelisting_type(listing_type){
  		this.listing.listing_type = listing_type;
  	}
- 	addImage(key) {
- 		this.actionSheetButtons = [
- 		{
- 			text: 'Camera',
- 			handler: () => {
- 				this.getPhoto('camera', key);
- 			}
- 		},{
- 			text: 'Gallery',
- 			handler: () => {
- 				this.getPhoto('gallery', key);
- 			}
- 		}
- 		];
- 		this.actionSheetTitle = 'Add Image';
- 		if (this.imgPreviews[key]['hasImg']){
- 			this.actionSheetTitle = 'Edit Image';
- 			this.actionSheetButtons.push({
- 				text: 'Delete',
- 				role: 'destructive',
- 				handler: () => {
- 					this.imgPreviews[key]['hasImg'] = false;
- 					this.imgPreviews[key]['src'] = '../assets/imgs/image_blank.png';
- 					this.listing.images.splice(key, 1);
-
-
+ 	addImage(event, key) {
+ 		if (document.URL.startsWith('http')){
+ 			this.imagesProvider.handleImageSelection(event).subscribe((res) =>{
+ 				this._SUFFIX 			= res.split(':')[1].split('/')[1].split(";")[0];
+ 				if(this.imagesProvider.isCorrectFileType(this._SUFFIX)){
+ 					this.listing.images[key] = event.target.files[0];
+ 					this.imgPreviews[key].src = res;
+ 					this.imgPreviews[key]['hasImg'] = true;
  				}
+ 			}, (error) =>{
+ 				console.dir(error);
+ 				this.displayAlert(error.message);
  			});
  		}
- 		const actionSheet = this.actionSheetCtrl.create({
- 			title: this.actionSheetTitle,
- 			buttons: this.actionSheetButtons
- 		});
- 		actionSheet.present();
+ 		else{
+
+ 			this.actionSheetButtons = [
+ 			{
+ 				text: 'Camera',
+ 				handler: () => {
+ 					this.getPhoto('camera', key);
+ 				}
+ 			},{
+ 				text: 'Gallery',
+ 				handler: () => {
+ 					this.getPhoto('gallery', key);
+ 				}
+ 			}
+ 			];
+ 			this.actionSheetTitle = 'Add Image';
+ 			if (this.imgPreviews[key]['hasImg']){
+ 				this.actionSheetTitle = 'Edit Image';
+ 				this.actionSheetButtons.push({
+ 					text: 'Delete',
+ 					role: 'destructive',
+ 					handler: () => {
+ 						this.imgPreviews[key]['hasImg'] = false;
+ 						this.imgPreviews[key]['src'] = '../assets/imgs/image_blank.png';
+ 						this.listing.images.splice(key, 1);
+
+
+ 					}
+ 				});
+ 			}
+ 			const actionSheet = this.actionSheetCtrl.create({
+ 				title: this.actionSheetTitle,
+ 				buttons: this.actionSheetButtons
+ 			});
+ 			actionSheet.present();
+ 		}
+
  	}
  	getGeocoder(location){
- 		let geoCoderOptions: NativeGeocoderOptions = {
- 			useLocale: true,
- 			maxResults: 5
- 		};
- 		this.nativeGeocoder.forwardGeocode(location + ', Cambodia', geoCoderOptions)
- 		.then((coordinates: NativeGeocoderForwardResult[]) => {
- 			this.location = new LatLng(parseFloat(coordinates[0].latitude), parseFloat(coordinates[0].longitude));
- 			let options = {
- 				target: this.location,
- 				zoom: 14,
- 			};
- 			this.map.moveCamera(options);
- 		})
- 		.catch((error: any) => console.log(error));
+ 		
+ 		if (document.URL.startsWith('http')){
+ 			let loc = location + ', Cambodia';
+	 		this.serviceProvider.getGeocode(loc).then((coordinates) => {
+	 			this.location = new LatLng(parseFloat(coordinates['lat']), parseFloat(coordinates['lng']));
+	 			let options = {
+	 				target: this.location,
+	 				zoom: 14,
+	 			};
+	 			this.map.moveCamera(options);
+	 		}).catch((err) => {
+	 			console.error('err', err);
+	 		});	
+ 		}
+ 		else{
+ 			let geoCoderOptions: NativeGeocoderOptions = {
+	 			useLocale: true,
+	 			maxResults: 5
+	 		};
+	 		this.nativeGeocoder.forwardGeocode(location + ', Cambodia', geoCoderOptions)
+	 		.then((coordinates: NativeGeocoderForwardResult[]) => {
+	 			this.location = new LatLng(parseFloat(coordinates[0].latitude), parseFloat(coordinates[0].longitude));
+	 			let options = {
+	 				target: this.location,
+	 				zoom: 14,
+	 			};
+	 			this.map.moveCamera(options);
+	 		})
+	 		.catch((error: any) => console.log(error));
+ 		}
+
+
+ 		
+
  	}
 
  	runTimeChange(address){
@@ -320,7 +436,7 @@ import { IonicStepperComponent } from 'ionic-stepper';
  			clearTimeout(this.timer);
  		}
  		this.timer = setTimeout(() => {
- 			
+
  			if (this.listing.address){
  				this.getGeocoder(this.listing.address);		
  			}
@@ -357,10 +473,14 @@ import { IonicStepperComponent } from 'ionic-stepper';
  	ionViewDidLoad() {
  		this.platform.ready().then((readySource) => {
 
+ 		
 
  			this.renderer.setStyle(this.mapElement.nativeElement, "height", '300px');
  			let element = this.mapElement.nativeElement;
+
+ 			
  			this.map = GoogleMaps.create(element);
+
  			this.map.one(GoogleMapsEvent.MAP_READY).then(() => {
  				let options = {
  					target: this.location,
@@ -373,30 +493,30 @@ import { IonicStepperComponent } from 'ionic-stepper';
  					// this.latLng = params[0]['target']['lat'].toFixed(6) + ',' + params[0]['target']['lng'].toFixed(6);
  					// this.latLng = this.latLng.toString();
  					// let geoCoderOptions: NativeGeocoderOptions = {
- 					// 	useLocale: true,
- 					// 	maxResults: 5
- 					// };
- 					// this.nativeGeocoder.reverseGeocode(params[0]['target']['lat'], params[0]['target']['lng'], geoCoderOptions)
- 					// .then((result: NativeGeocoderReverseResult[]) => {
- 					// 	let province = result[0]['administrativeArea'];
- 					// 	let district = result[0]['subAdministrativeArea'];
- 					// 	let commune = result[0]['subLocality'] == '' ? result[0]['locality'] : result[0]['subLocality'];
- 					// 	let street = result[0]['thoroughfare'];
- 					// 	let houseNo = result[0]['subThoroughfare'];
- 					// 	let address = [];
- 					// 	address.push(houseNo);
- 					// 	address.push(street);
- 					// 	address.push(commune);
- 					// 	address.push(district);
- 					// 	address.push(province);
- 					// 	address = address.filter(v=>v!='');
- 					// 	this.listing.address = address.join(', ');
- 					// 	this.cf.detectChanges();
- 					// })
- 					// .catch((error: any) => console.log(error));
- 					// this.listing.address = 
- 					this.cf.detectChanges();
- 				});
+ 						// 	useLocale: true,
+ 						// 	maxResults: 5
+ 						// };
+ 						// this.nativeGeocoder.reverseGeocode(params[0]['target']['lat'], params[0]['target']['lng'], geoCoderOptions)
+ 						// .then((result: NativeGeocoderReverseResult[]) => {
+ 							// 	let province = result[0]['administrativeArea'];
+ 							// 	let district = result[0]['subAdministrativeArea'];
+ 							// 	let commune = result[0]['subLocality'] == '' ? result[0]['locality'] : result[0]['subLocality'];
+ 							// 	let street = result[0]['thoroughfare'];
+ 							// 	let houseNo = result[0]['subThoroughfare'];
+ 							// 	let address = [];
+ 							// 	address.push(houseNo);
+ 							// 	address.push(street);
+ 							// 	address.push(commune);
+ 							// 	address.push(district);
+ 							// 	address.push(province);
+ 							// 	address = address.filter(v=>v!='');
+ 							// 	this.listing.address = address.join(', ');
+ 							// 	this.cf.detectChanges();
+ 							// })
+ 							// .catch((error: any) => console.log(error));
+ 							// this.listing.address = 
+ 							this.cf.detectChanges();
+ 						});
  			});
  		});
  	}
@@ -408,7 +528,7 @@ import { IonicStepperComponent } from 'ionic-stepper';
  				this.listing.address = this.listingProvider.getDistrict(this.listing.district).text + ', ' + this.listingProvider.getProvince(this.listing.province).text;
  				this.getGeocoder(this.listing.address);	
  			}
- 			
+
  		}
  	}
 
@@ -422,10 +542,10 @@ import { IonicStepperComponent } from 'ionic-stepper';
  		if (this.auth.authenticated){
  			this.auth.updatePhonenumbers(this.listing);
  			this.listingProvider.add(this.listing).then((listing) => {
+ 				console.log('this.listing.images', this.listing.images);
  				if (this.listing.images.length > 0){
-
  					this.listingProvider.updateImages(listing['id'], this.listing.images).then((imgs) => {
-
+ 						console.log('imgs', imgs);
  						this.listing.images = imgs;
  						this.listingProvider.update(listing['id'], this.listing).then((listing) => {
 

@@ -14,7 +14,7 @@ import { SearchPage } from '../search/search';
 
 import { AuthServiceProvider } from '../../providers/auth/auth';
 import { ServiceProvider } from '../../providers/service/service';
-import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
+
 
 
 
@@ -30,7 +30,6 @@ export class MePage {
 		public translate: TranslateService,
 		private storage: Storage,
 		private auth: AuthServiceProvider,
-		public fb: Facebook,
 		private loadingCtrl: LoadingController,
 		private serviceProvider: ServiceProvider) {
 
@@ -81,30 +80,15 @@ export class MePage {
 		}
 	}
 
-
 	loginWithFacebook() {
 		this.presentLoading();
-		this.fb.login(['public_profile', 'email'])
-		.then( (res: FacebookLoginResponse) => {
-			if(res.status == "connected") {
-				var fb_id = res.authResponse.userID;
-				var fb_token = res.authResponse.accessToken;
-
-				this.auth.signInWithFacebook(fb_token).then((user) => {
-					console.log("Login Success");
-					this.dismissLoading();
-					this.navCtrl.push(ProfilePage, {}, {animate: false});
-				});
-
-			} 
-			else {
-				console.log("An error occurred...");
-			}
+		this.auth.loginWithFacebook().then(() => {
+			this.dismissLoading();
+			this.navCtrl.push(ProfilePage, {}, {animate: false});
 		})
-		.catch((e) => {
-			console.log('Error logging into Facebook', e);
-		});
 	}
+
+	
 
 	goProfile(){
 		this.auth.getUser().then((user) => {

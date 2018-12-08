@@ -96,6 +96,7 @@ import { File } from '@ionic-native/file';
 
      this.serviceProvider.transition();
      this.listing = this.navParams.get('listing');
+     console.log('listing detail page ionViewWillEnter ==> ', this.listing);
      // this.listing.created_date = new Date().getTime() + this.listing.created_date;
 
      this.auth.isFavorite(this.listing.id).then((res) => {
@@ -131,6 +132,7 @@ import { File } from '@ionic-native/file';
        this.map.on(GoogleMapsEvent.CAMERA_MOVE_END).subscribe((params) => {
          this.cf.detectChanges();
        });
+       
        let marker = {
          disableAutoPan: true, 
          position: {lat: parseFloat(this.listing.lat), lng: parseFloat(this.listing.lng)},
@@ -146,6 +148,8 @@ import { File } from '@ionic-native/file';
 
    ionViewDidLoad(){
      this.platform.ready().then((readySource) => {
+       this.listing = this.navParams.get('listing');
+       this.location = new LatLng(this.listing.lat, this.listing.lng);
        this.refreshMap();
      });
    }

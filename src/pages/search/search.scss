@@ -1,14 +1,23 @@
 page-search {
+	
 	.card-subtitle {
 		margin-top: 15px;
 	}
 	.card-background-page {
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: space-between;
+		align-items: center;
+		height: 400px;
+		padding: 5px;
 
 		ion-card {
 			position: relative;
 			text-align: center;
 			height: 200px;
-
+			width: 30%;
+			margin: 10px;
+			flex-grow: 1;
 		}
 
 		
@@ -145,13 +154,12 @@ page-search {
 			width: 100%;
 			font-weight: bold;
 			color: #fff;
-			 -webkit-text-stroke: 0.1px black;
-		   text-shadow:
-		       2px 2px 0 rgba(69, 69, 69, 0.9),
-		     -1px -1px 0 rgba(69, 69, 69, 0.9),  
-		      1px -1px 0 rgba(69, 69, 69, 0.9),
-		      -1px 1px 0 rgba(69, 69, 69, 0.9),
-		       1px 1px 0 rgba(69, 69, 69, 0.9);
+			text-shadow:
+			2px 2px 0 rgba(69, 69, 69, 0.9),
+			-1px -1px 0 rgba(69, 69, 69, 0.9),  
+			1px -1px 0 rgba(69, 69, 69, 0.9),
+			-1px 1px 0 rgba(69, 69, 69, 0.9),
+			1px 1px 0 rgba(69, 69, 69, 0.9);
 		}
 
 		.card-subtitle {
@@ -160,14 +168,19 @@ page-search {
 			top: 52%;
 			width: 100%;
 			color: #fff;
-			-webkit-text-stroke: 0.1px black;
-		   text-shadow:
-		       2px 2px 0 rgba(69, 69, 69, 0.9),
-		     -1px -1px 0 rgba(69, 69, 69, 0.9),  
-		      1px -1px 0 rgba(69, 69, 69, 0.9),
-		      -1px 1px 0 rgba(69, 69, 69, 0.9),
-		       1px 1px 0 rgba(69, 69, 69, 0.9);
+			text-shadow:
+			2px 2px 0 rgba(69, 69, 69, 0.9),
+			-1px -1px 0 rgba(69, 69, 69, 0.9),  
+			1px -1px 0 rgba(69, 69, 69, 0.9),
+			-1px 1px 0 rgba(69, 69, 69, 0.9),
+			1px 1px 0 rgba(69, 69, 69, 0.9);
 		}
 
 	}
+	@media (max-width: 600px) {
+		ion-card {
+			width: 100% !important;
+		}
+	}
 }
+
