@@ -87,7 +87,8 @@ export class ListingProvider {
 		private imageResizer: ImageResizer,
 		private base64: Base64,
 		private file: File,
-		private auth: AuthServiceProvider) {
+		private auth: AuthServiceProvider,
+		private http: HttpClient) {
 		this.listingsCollection = this.afStore.collection<Listing>('listings');
 		this.listings = this.listingsCollection.valueChanges();
 		this.usersCollection = this.afStore.collection<User>('users');
@@ -370,6 +371,28 @@ export class ListingProvider {
 	getAll(province){
 
 		return new Promise<Object>((resolve, reject) => {
+
+			this.http.get('http://localhost:5001/konleng-firebase/us-central1/webApi/api/v1/listings')
+			.subscribe((res) => {
+			  	console.log('res', res);
+			}, (err) => {
+				console.error('err', err);
+			});
+
+			// this.http.post('http://localhost:5001/konleng-firebase/us-central1/webApi/api/v1/listings', 
+			// { 
+			//   cardToken : token,
+			//   amount: 500
+			// }, 
+			// {
+			//   headers: { 'Content-Type': 'application/json' }
+			// })
+			// .then(data => {
+			//   console.log(data.data);
+			// }).catch(error => {
+			//   console.log(error.status);
+			// });
+
 			this.afStore.collection('listings', ref => {
 				let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
 				query = query.where('status', '==', 1);
@@ -385,6 +408,7 @@ export class ListingProvider {
 				});
 				resolve(this.listingsList);
 			});
+
 		});
 	}
 	// searchKeyword(keyword){
