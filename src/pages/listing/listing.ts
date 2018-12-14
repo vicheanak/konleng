@@ -138,7 +138,6 @@ import { ServiceProvider } from '../../providers/service/service';
          }
        }
        this.listingProvider.getAll(this.province.id).then((listings) => {
-         
          this.location = new LatLng(this.province.lat, this.province.lng);
          this.listings = listings;
          this.refreshLocations();

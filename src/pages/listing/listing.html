@@ -37,10 +37,10 @@
 			</ion-grid>
 			<ion-list *ngSwitchCase="'list'">
 				<ion-item (click)="goDetail(listing)" no-padding *ngFor="let listing of listings">
-					<ion-thumbnail item-start [style.background-image]="getBackground(listing?.images[0])" style="background-size:cover; border-radius: 10px; border-radius: 10px; border: white 2px solid; background-position: center; width: 115px; height: 115px;     margin: 0px 5px 0px 5px !important; padding: 0px !important;">
+					<ion-thumbnail item-start [style.background-image]="getBackground(listing?.thumb)" style="background-size:cover; border-radius: 10px; border-radius: 10px; border: white 2px solid; background-position: center; width: 115px; height: 115px;     margin: 0px 5px 0px 5px !important; padding: 0px !important;">
 					</ion-thumbnail>
 					<h2>{{listing.title}}</h2>
-					<p class="type">{{listing.district | translate}} ({{listing.size}})</p>
+					<p class="type">{{listing.district | translate}} {{listing.province | translate}} {{listing.size ? (listing.size) : ''}}</p>
 					<p class="type">{{listing.property_type | translate}} {{"FOR" | translate}} {{listing.listing_type | translate}}</p>
 					<p class="price">${{listing.price}}</p>
 					<ion-icon color="dark" item-end name="ios-arrow-forward"></ion-icon>

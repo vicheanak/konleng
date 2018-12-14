@@ -7,23 +7,21 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>751159391935-9signss1daegractgqb5c75vu4m33l7j.apps.googleusercontent.com</string>
+	<string>376338125222-tg70iftq8io8ba1kcibctmltqlevo72l.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.751159391935-9signss1daegractgqb5c75vu4m33l7j</string>
-	<key>ANDROID_CLIENT_ID</key>
-	<string>751159391935-bq4e5vj57h932savofahqu3lec5345f1.apps.googleusercontent.com</string>
+	<string>com.googleusercontent.apps.376338125222-tg70iftq8io8ba1kcibctmltqlevo72l</string>
 	<key>API_KEY</key>
-	<string>AIzaSyD3r5XvRxF4z-5JEfEr7CUFI0dHko4-jQM</string>
+	<string>AIzaSyAqjVByTPX3dO2Q0p077yrKdM1j8k2fcFk</string>
 	<key>GCM_SENDER_ID</key>
-	<string>751159391935</string>
+	<string>376338125222</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.konleng.app</string>
+	<string>app.konleng.com</string>
 	<key>PROJECT_ID</key>
-	<string>konleng-firebase</string>
+	<string>konleng-cloud</string>
 	<key>STORAGE_BUCKET</key>
-	<string>konleng-firebase.appspot.com</string>
+	<string>konleng-cloud.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<true></true>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -35,8 +33,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:751159391935:ios:412f3f564f8cbe22</string>
+	<string>1:376338125222:ios:520f3f2b54a601f1</string>
 	<key>DATABASE_URL</key>
-	<string>https://konleng-firebase.firebaseio.com</string>
+	<string>https://konleng-cloud.firebaseio.com</string>
 </dict>
 </plist>

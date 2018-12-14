@@ -81,6 +81,7 @@ export class ListingProvider {
 	private countsCollection: AngularFirestoreCollection<Count>;
 	private provinces: any = [];
 	private districts: any = [];
+	private queryUrl: string = 'http://localhost:5000/konleng-cloud/us-central1/webApi/'+'api/v1/listings';
 	listing: Observable<Listing>;
 	constructor(private afStore: AngularFirestore,
 		private afStorage: AngularFireStorage,
@@ -372,41 +373,16 @@ export class ListingProvider {
 
 		return new Promise<Object>((resolve, reject) => {
 
-			this.http.get('http://localhost:5001/konleng-firebase/us-central1/webApi/api/v1/listings')
+			this.http.get(this.queryUrl)
 			.subscribe((res) => {
-			  	console.log('res', res);
+			  	this.listingsList = [];
+				res['hits'].forEach((listing: Listing) => {
+					this.listingsList.push(listing);
+				});
+				console.log(res['hits']);
+				resolve(this.listingsList);
 			}, (err) => {
 				console.error('err', err);
-			});
-
-			// this.http.post('http://localhost:5001/konleng-firebase/us-central1/webApi/api/v1/listings', 
-			// { 
-			//   cardToken : token,
-			//   amount: 500
-			// }, 
-			// {
-			//   headers: { 'Content-Type': 'application/json' }
-			// })
-			// .then(data => {
-			//   console.log(data.data);
-			// }).catch(error => {
-			//   console.log(error.status);
-			// });
-
-			this.afStore.collection('listings', ref => {
-				let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
-				query = query.where('status', '==', 1);
-				query = query.where('province', '==', province);
-				query = query.orderBy('created_date', 'desc');
-				return query;
-			})
-			.valueChanges().subscribe((listingsData: Listing[]) => {
-				this.listingsList = [];
-				listingsData.forEach((listing: Listing) => {
-					this.listingsList.push(listing);
-					
-				});
-				resolve(this.listingsList);
 			});
 
 		});
