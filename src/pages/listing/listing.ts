@@ -53,6 +53,8 @@ import { ServiceProvider } from '../../providers/service/service';
    private land_icon: MarkerIcon;
    private house_icon: MarkerIcon;
    private apartment_icon: MarkerIcon;
+   private commercial_icon: MarkerIcon;
+   private room_icon: MarkerIcon;
    constructor(private platform: Platform, 
      public actionSheetCtrl: ActionSheetController, 
      private navCtrl: NavController, 
@@ -66,25 +68,38 @@ import { ServiceProvider } from '../../providers/service/service';
      private serviceProvider: ServiceProvider
      ) {
 
-     //Add cluster locations
      this.land_icon = {
-       url: 'https://firebasestorage.googleapis.com/v0/b/konleng-firebase.appspot.com/o/land_icon_new.png?alt=media&token=2e7492a8-a9b6-4617-80f4-30e2da68c8d8',
+       url: 'https://firebasestorage.googleapis.com/v0/b/konleng-cloud.appspot.com/o/land_icon.png?alt=media&token=50038101-57b6-4d0e-8ae6-4d4a93b29a73',
        size: {
-         width: 30,
+         width: 40,
          height: 40
        }
      } as MarkerIcon;
      this.house_icon = {
-       url: 'https://firebasestorage.googleapis.com/v0/b/konleng-firebase.appspot.com/o/house_icon_new.png?alt=media&token=ba59f90f-575e-4dae-bfe5-2e23ec2433c7',
+       url: 'https://firebasestorage.googleapis.com/v0/b/konleng-cloud.appspot.com/o/house_icon.png?alt=media&token=cbbfe331-5cdf-4cfa-9b86-8478d87e6fc6',
        size: {
-         width: 30,
+         width: 40,
+         height: 40
+       },
+     } as MarkerIcon;
+     this.apartment_icon = {
+       url: 'https://firebasestorage.googleapis.com/v0/b/konleng-cloud.appspot.com/o/apartment_icon.png?alt=media&token=f8ce5937-ca3b-4f45-8955-d82d28ed3f7a',
+       size: {
+         width: 40,
          height: 40
        }
      } as MarkerIcon;
-     this.apartment_icon = {
-       url: 'https://firebasestorage.googleapis.com/v0/b/konleng-firebase.appspot.com/o/apartment_icon_new.png?alt=media&token=4b7e32df-21f4-4f6d-aca6-4d63ffdc496b',
+     this.commercial_icon = {
+       url: 'https://firebasestorage.googleapis.com/v0/b/konleng-cloud.appspot.com/o/commercial_icon.png?alt=media&token=09be9872-59bd-4d1d-a576-7904d94a8ada',
        size: {
-         width: 30,
+         width: 40,
+         height: 40
+       }
+     } as MarkerIcon;
+     this.room_icon = {
+       url: 'https://firebasestorage.googleapis.com/v0/b/konleng-cloud.appspot.com/o/room_icon.png?alt=media&token=1d08f1d9-feec-4f88-a8e0-07ad1c5aa0fd',
+       size: {
+         width: 40,
          height: 40
        }
      } as MarkerIcon;
@@ -117,6 +132,12 @@ import { ServiceProvider } from '../../providers/service/service';
        if (listing.property_type == 'apartment'){
          icon = this.apartment_icon;
        }
+       if (listing.property_type == 'commercial'){
+         icon = this.commercial_icon;
+       }
+       if (listing.property_type == 'room'){
+         icon = this.room_icon;
+       }
        this.locations.push({
          title: '$'+listing.price,
          disableAutoPan: true, 
@@ -130,6 +151,7 @@ import { ServiceProvider } from '../../providers/service/service';
    ionViewDidEnter() {
 
      let province = this.navParams.get('province');
+     let listing_type = this.navParams.get('listing_type');
      if (province){
        for (let p of this.provinces){
          if (p.id == province){
@@ -137,8 +159,19 @@ import { ServiceProvider } from '../../providers/service/service';
            this.filter.province = p.id;
          }
        }
-       this.listingProvider.getAll(this.province.id).then((listings) => {
+       this.listingProvider.getAll({province: this.province.id, listing_type: listing_type}).then((listings) => {
          this.location = new LatLng(this.province.lat, this.province.lng);
+         this.listings = listings;
+         this.refreshLocations();
+       });
+     }
+
+     let keyword = this.navParams.get('keyword');
+     if (keyword){
+       this.filter.keyword = keyword;
+       this.filter.province = '';
+       this.listingProvider.getAll({keyword: keyword}).then((listings) => {
+         this.location = new LatLng(11.562108, 104.888535);
          this.listings = listings;
          this.refreshLocations();
        });
@@ -196,7 +229,7 @@ import { ServiceProvider } from '../../providers/service/service';
    
 
    ionViewWillEnter(){
-       this.serviceProvider.transition();
+     this.serviceProvider.transition();
    }
 
    ionViewWillLeave(){
@@ -208,19 +241,38 @@ import { ServiceProvider } from '../../providers/service/service';
      catch(e){
      }
    }
-
+// https://firebasestorage.googleapis.com/v0/b/konleng-cloud.appspot.com/o/blue-dot.png?alt=media&token=79ea3640-d17c-445e-82be-7a6e01fbdb66
    addMarkers() {
      let markersWindows = [];
-
-     for(let i = 0; i < this.locations.length; i ++){
-       let markerSync = this.map.addMarker(this.locations[i]).then((marker) => {
-         marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe((params) => {
-           // 
-           let loc = this.locations[i];
-           this.presentDetailModal(loc);
-         }); 
+     let markerCluster = this.map.addMarkerCluster({
+       markers: this.locations,
+       icons: [
+           {
+             url: "/assets/imgs/cluster.png", 
+             anchor: {x: 16, y: 16},
+             label: {
+               color: 'white',
+               bold: true,
+               fontSize: 13
+             } as MarkerLabel
+           }
+         ]
+       }).then((marker) => {
+          marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe((params) => {
+            
+            let loc = params[1].get('listing');
+            this.presentDetailModal(loc);
+          }); 
        });
-     } 
+      // for(let i = 0; i < this.locations.length; i ++){
+      //   let markerSync = this.map.addMarker(this.locations[i]).then((marker) => {
+      //     marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe((params) => {
+      //       let loc = this.locations[i];
+      //       this.presentDetailModal(loc);
+      //     }); 
+      //   });
+      // } 
+     
    }
 
    goDetail(listing){
@@ -244,7 +296,7 @@ import { ServiceProvider } from '../../providers/service/service';
          this.filter = data.filter;
 
          if (!data.filter.province){
-           this.province.text = "Any";
+           this.province = '';
          }
          for (let p of this.provinces){
            if (p.id == this.filter.province){
@@ -257,13 +309,13 @@ import { ServiceProvider } from '../../providers/service/service';
      });
      filterModal.present();
    }
-   presentDetailModal(location) {
+   presentDetailModal(listing) {
      try{
        let data = { goDetail: false, close: true };
        this.detailModal.dismiss(data);
      }catch(e){
      }
-     this.detailModal = this.modalCtrl.create(DetailModal, { listing: location.listing }, {cssClass: 'detail-modal' });
+     this.detailModal = this.modalCtrl.create(DetailModal, { listing: listing }, {cssClass: 'detail-modal' });
      this.detailModal.onDidDismiss(data => {
 
        if (data){
@@ -325,11 +377,10 @@ import { ServiceProvider } from '../../providers/service/service';
    }
 
    search(){
-     this.listingProvider.filter(this.filter).then((listings) => {
+     this.listingProvider.getAll(this.filter).then((listings) => {
        let data = {listing: listings, filter: this.filter};
        this.viewCtrl.dismiss(data);
      });
-
    }
 
    provinceChange(){

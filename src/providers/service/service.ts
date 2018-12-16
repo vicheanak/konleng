@@ -43,7 +43,7 @@ import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/na
 
     getGeocode(address){
       return new Promise<Object>((resolve, reject) => {
-        let url = 'https://maps.googleapis.com/maps/api/geocode/json?address='+address+'&key=AIzaSyC48OCw2LMjdmNeuWmGmRLk2ayuZLOaxV8';
+        let url = 'https://maps.googleapis.com/maps/api/geocode/json?address='+address+'&key=AIzaSyBUuXZ2zRqiAzdOvSvc6YGN1odBEX3qyrw';
         this.http.get(url).subscribe((results) => {
           if (results['results']){
             resolve(results['results'][0]['geometry']['location']);  

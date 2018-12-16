@@ -14,108 +14,130 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <!-- <ion-searchbar [(ngModel)]="queryText" (search)="searchByKeyword($event)" placeholder='{{ "SEARCH" | translate }}'></ion-searchbar> -->
+  <ion-searchbar [(ngModel)]="queryText" (search)="searchByKeyword($event)" placeholder='{{ "SEARCH" | translate }}'></ion-searchbar>
   <div class="card-background-page">
-    <ion-card (click)="goListing('phnom-penh')">
-      <div class="card-title">{{ "phnom-penh" | translate }}</div>
-      <div class="card-subtitle">{{ provinces[0]?.sell }} {{ "sell" | translate}} - {{ provinces[0]?.rent }} {{ "rent" | translate }}</div>
+    <ion-card *ngFor="let province of provinces; let i = index">
+      <div class="card-title">{{ province.id | translate }}</div>
+      <div class="left-content" (click)="goListing(province.id, 'sale')">
+        <ion-label>
+        {{ province?.sale }} {{ "sale" | translate}}
+        </ion-label>
+      </div>
+      <div class="right-content" (click)="goListing(province.id, 'rent')">
+        <ion-label>
+        {{ province?.rent }} {{ "rent" | translate }}
+        </ion-label>
+      </div>
     </ion-card>
-    <ion-card (click)="goListing('preah-sihanouk')">
+    <!-- <ion-card>
+      <div class="card-title">{{ "phnom-penh" | translate }}</div>
+      <div class="left-content" (click)="goListing('phnom-penh', 'sale')">
+        <ion-label>
+        {{ provinces[0]?.sale }} {{ "sale" | translate}}
+        </ion-label>
+      </div>
+      <div class="right-content" (click)="goListing('phnom-penh', 'rent')">
+        <ion-label>
+        {{ provinces[0]?.rent }} {{ "rent" | translate }}
+        </ion-label>
+      </div>
+    </ion-card> -->
+    <!-- <ion-card (click)="goListing('preah-sihanouk')">
       <div class="card-title">{{ "preah-sihanouk" | translate }}</div>
-      <div class="card-subtitle">{{ provinces[1]?.sell }} {{ "sell" | translate}} - {{ provinces[1]?.rent }} {{ "rent" | translate }}</div>
+      <div class="card-subtitle">{{ provinces[1]?.sale }} {{ "sale" | translate}} - {{ provinces[1]?.rent }} {{ "rent" | translate }}</div>
     </ion-card>
     <ion-card (click)="goListing('kampong-cham')">
       <div class="card-title">{{ "kampong-cham" | translate }}</div>
-      <div class="card-subtitle">{{ provinces[2]?.sell }} {{ "sell" | translate}} - {{ provinces[2]?.rent }} {{ "rent" | translate }}</div>
+      <div class="card-subtitle">{{ provinces[2]?.sale }} {{ "sale" | translate}} - {{ provinces[2]?.rent }} {{ "rent" | translate }}</div>
     </ion-card>
     <ion-card (click)="goListing('siem-reap')">
       <div class="card-title">{{ "siem-reap" | translate }}</div>
-      <div class="card-subtitle">{{ provinces[3]?.sell }} {{ "sell" | translate}} - {{ provinces[3]?.rent }} {{ "rent" | translate }}</div>
+      <div class="card-subtitle">{{ provinces[3]?.sale }} {{ "sale" | translate}} - {{ provinces[3]?.rent }} {{ "rent" | translate }}</div>
     </ion-card>
     <ion-card (click)="goListing('battambang')">
       <div class="card-title">{{ "battambang" | translate }}</div>
-      <div class="card-subtitle">{{ provinces[4]?.sell }} {{ "sell" | translate}} - {{ provinces[4]?.rent }} {{ "rent" | translate }}</div>
+      <div class="card-subtitle">{{ provinces[4]?.sale }} {{ "sale" | translate}} - {{ provinces[4]?.rent }} {{ "rent" | translate }}</div>
     </ion-card>
     <ion-card (click)="goListing('kandal')">
       <div class="card-title">{{ "kandal" | translate }}</div>
-      <div class="card-subtitle">{{ provinces[5]?.sell }} {{ "sell" | translate}} - {{ provinces[5]?.rent }} {{ "rent" | translate }}</div>
+      <div class="card-subtitle">{{ provinces[5]?.sale }} {{ "sale" | translate}} - {{ provinces[5]?.rent }} {{ "rent" | translate }}</div>
     </ion-card>
     <ion-card (click)="goListing('banteay-meanchey')">
       <div class="card-title">{{ "banteay-meanchey" | translate }}</div>
-      <div class="card-subtitle">{{ provinces[6]?.sell }} {{ "sell" | translate}} - {{ provinces[6]?.rent }} {{ "rent" | translate }}</div>
+      <div class="card-subtitle">{{ provinces[6]?.sale }} {{ "sale" | translate}} - {{ provinces[6]?.rent }} {{ "rent" | translate }}</div>
     </ion-card>
     <ion-card (click)="goListing('kampong-chhnang')">
       <div class="card-title">{{ "kampong-chhnang" | translate }}</div>
-      <div class="card-subtitle">{{ provinces[7]?.sell }} {{ "sell" | translate}} - {{ provinces[7]?.rent }} {{ "rent" | translate }}</div>
+      <div class="card-subtitle">{{ provinces[7]?.sale }} {{ "sale" | translate}} - {{ provinces[7]?.rent }} {{ "rent" | translate }}</div>
     </ion-card>
     <ion-card (click)="goListing('kampong-speu')">
       <div class="card-title">{{ "kampong-speu" | translate }}</div>
-      <div class="card-subtitle">{{ provinces[8]?.sell }} {{ "sell" | translate}} - {{ provinces[8]?.rent }} {{ "rent" | translate }}</div>
+      <div class="card-subtitle">{{ provinces[8]?.sale }} {{ "sale" | translate}} - {{ provinces[8]?.rent }} {{ "rent" | translate }}</div>
     </ion-card>
     <ion-card (click)="goListing('kampong-thom')">
       <div class="card-title">{{ "kampong-thom" | translate }}</div>
-      <div class="card-subtitle">{{ provinces[9]?.sell }} {{ "sell" | translate}} - {{ provinces[9]?.rent }} {{ "rent" | translate }}</div>
+      <div class="card-subtitle">{{ provinces[9]?.sale }} {{ "sale" | translate}} - {{ provinces[9]?.rent }} {{ "rent" | translate }}</div>
     </ion-card>
     <ion-card (click)="goListing('kampot')">
       <div class="card-title">{{ "kampot" | translate }}</div>
-      <div class="card-subtitle">{{ provinces[10]?.sell }} {{ "sell" | translate}} - {{ provinces[10]?.rent }} {{ "rent" | translate }}</div>
+      <div class="card-subtitle">{{ provinces[10]?.sale }} {{ "sale" | translate}} - {{ provinces[10]?.rent }} {{ "rent" | translate }}</div>
     </ion-card>
     <ion-card (click)="goListing('kep')">
       <div class="card-title">{{ "kep" | translate }}</div>
-      <div class="card-subtitle">{{ provinces[11]?.sell }} {{ "sell" | translate}} - {{ provinces[11]?.rent }} {{ "rent" | translate }}</div>
+      <div class="card-subtitle">{{ provinces[11]?.sale }} {{ "sale" | translate}} - {{ provinces[11]?.rent }} {{ "rent" | translate }}</div>
     </ion-card>
     <ion-card (click)="goListing('koh-kong')">
       <div class="card-title">{{ "koh-kong" | translate }}</div>
-      <div class="card-subtitle">{{ provinces[12]?.sell }} {{ "sell" | translate}} - {{ provinces[12]?.rent }} {{ "rent" | translate }}</div>
+      <div class="card-subtitle">{{ provinces[12]?.sale }} {{ "sale" | translate}} - {{ provinces[12]?.rent }} {{ "rent" | translate }}</div>
     </ion-card>
     <ion-card (click)="goListing('kratie')">
       <div class="card-title">{{ "kratie" | translate }}</div>
-      <div class="card-subtitle">{{ provinces[13]?.sell }} {{ "sell" | translate}} - {{ provinces[13]?.rent }} {{ "rent" | translate }}</div>
+      <div class="card-subtitle">{{ provinces[13]?.sale }} {{ "sale" | translate}} - {{ provinces[13]?.rent }} {{ "rent" | translate }}</div>
     </ion-card>
     <ion-card (click)="goListing('mondulkiri')">
       <div class="card-title">{{ "mondulkiri" | translate }}</div>
-      <div class="card-subtitle">{{ provinces[14]?.sell }} {{ "sell" | translate}} - {{ provinces[14]?.rent }} {{ "rent" | translate }}</div>
+      <div class="card-subtitle">{{ provinces[14]?.sale }} {{ "sale" | translate}} - {{ provinces[14]?.rent }} {{ "rent" | translate }}</div>
     </ion-card>
     <ion-card (click)="goListing('oddar-meanchey')">
       <div class="card-title">{{ "oddar-meanchey" | translate }}</div>
-      <div class="card-subtitle">{{ provinces[15]?.sell }} {{ "sell" | translate}} - {{ provinces[15]?.rent }} {{ "rent" | translate }}</div>
+      <div class="card-subtitle">{{ provinces[15]?.sale }} {{ "sale" | translate}} - {{ provinces[15]?.rent }} {{ "rent" | translate }}</div>
     </ion-card>
     <ion-card (click)="goListing('pailin')">
       <div class="card-title">{{ "pailin" | translate }}</div>
-      <div class="card-subtitle">{{ provinces[16]?.sell }} {{ "sell" | translate}} - {{ provinces[16]?.rent }} {{ "rent" | translate }}</div>
+      <div class="card-subtitle">{{ provinces[16]?.sale }} {{ "sale" | translate}} - {{ provinces[16]?.rent }} {{ "rent" | translate }}</div>
     </ion-card>
     <ion-card (click)="goListing('preah-vihear')">
       <div class="card-title">{{ "preah-vihear" | translate }}</div>
-      <div class="card-subtitle">{{ provinces[17]?.sell }} {{ "sell" | translate}} - {{ provinces[17]?.rent }} {{ "rent" | translate }}</div>
+      <div class="card-subtitle">{{ provinces[17]?.sale }} {{ "sale" | translate}} - {{ provinces[17]?.rent }} {{ "rent" | translate }}</div>
     </ion-card>
     <ion-card (click)="goListing('prey-veng')">
       <div class="card-title">{{ "prey-veng" | translate }}</div>
-      <div class="card-subtitle">{{ provinces[18]?.sell }} {{ "sell" | translate}} - {{ provinces[18]?.rent }} {{ "rent" | translate }}</div>
+      <div class="card-subtitle">{{ provinces[18]?.sale }} {{ "sale" | translate}} - {{ provinces[18]?.rent }} {{ "rent" | translate }}</div>
     </ion-card>
     <ion-card (click)="goListing('pursat')">
       <div class="card-title">{{ "pursat" | translate }}</div>
-      <div class="card-subtitle">{{ provinces[19]?.sell }} {{ "sell" | translate}} - {{ provinces[19]?.rent }} {{ "rent" | translate }}</div>
+      <div class="card-subtitle">{{ provinces[19]?.sale }} {{ "sale" | translate}} - {{ provinces[19]?.rent }} {{ "rent" | translate }}</div>
     </ion-card>
     <ion-card (click)="goListing('ratanakiri')">
       <div class="card-title">{{ "ratanakiri" | translate }}</div>
-      <div class="card-subtitle">{{ provinces[20]?.sell }} {{ "sell" | translate}} - {{ provinces[20]?.rent }} {{ "rent" | translate }}</div>
+      <div class="card-subtitle">{{ provinces[20]?.sale }} {{ "sale" | translate}} - {{ provinces[20]?.rent }} {{ "rent" | translate }}</div>
     </ion-card>
     <ion-card (click)="goListing('stung-treng')">
       <div class="card-title">{{ "stung-treng" | translate }}</div>
-      <div class="card-subtitle">{{ provinces[21]?.sell }} {{ "sell" | translate}} - {{ provinces[21]?.rent }} {{ "rent" | translate }}</div>
+      <div class="card-subtitle">{{ provinces[21]?.sale }} {{ "sale" | translate}} - {{ provinces[21]?.rent }} {{ "rent" | translate }}</div>
     </ion-card>
     <ion-card (click)="goListing('svay-rieng')">
       <div class="card-title">{{ "svay-rieng" | translate }}</div>
-      <div class="card-subtitle">{{ provinces[22]?.sell }} {{ "sell" | translate}} - {{ provinces[22]?.rent }} {{ "rent" | translate }}</div>
+      <div class="card-subtitle">{{ provinces[22]?.sale }} {{ "sale" | translate}} - {{ provinces[22]?.rent }} {{ "rent" | translate }}</div>
     </ion-card>
     <ion-card (click)="goListing('takeo')">
       <div class="card-title">{{ "takeo" | translate }}</div>
-      <div class="card-subtitle">{{ provinces[23]?.sell }} {{ "sell" | translate}} - {{ provinces[23]?.rent }} {{ "rent" | translate }}</div>
+      <div class="card-subtitle">{{ provinces[23]?.sale }} {{ "sale" | translate}} - {{ provinces[23]?.rent }} {{ "rent" | translate }}</div>
     </ion-card>
     <ion-card (click)="goListing('tboung-khmum')">
       <div class="card-title">{{ "tboung-khmum" | translate }}</div>
-      <div class="card-subtitle">{{ provinces[24]?.sell }} {{ "sell" | translate}} - {{ provinces[24]?.rent }} {{ "rent" | translate }}</div>
-    </ion-card>
+      <div class="card-subtitle">{{ provinces[24]?.sale }} {{ "sale" | translate}} - {{ provinces[24]?.rent }} {{ "rent" | translate }}</div>
+    </ion-card> -->
   </div>
   
 </ion-content>

@@ -50,8 +50,8 @@ export class SearchPage {
     });
   }
 
-  goListing(province){
-    this.navCtrl.push(ListingPage, {province: province}, {animate: false});
+  goListing(province, listing_type){
+    this.navCtrl.push(ListingPage, {province: province, listing_type: listing_type}, {animate: false});
   }
 
   searchByKeyword(){

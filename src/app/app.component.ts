@@ -38,8 +38,8 @@ export class MyApp {
 
       if (document.URL.startsWith('http')){
         Environment.setEnv({
-          API_KEY_FOR_BROWSER_RELEASE: "AIzaSyC48OCw2LMjdmNeuWmGmRLk2ayuZLOaxV8",
-          API_KEY_FOR_BROWSER_DEBUG: "AIzaSyC48OCw2LMjdmNeuWmGmRLk2ayuZLOaxV8"
+          API_KEY_FOR_BROWSER_RELEASE: "AIzaSyBUuXZ2zRqiAzdOvSvc6YGN1odBEX3qyrw",
+          API_KEY_FOR_BROWSER_DEBUG: "AIzaSyBUuXZ2zRqiAzdOvSvc6YGN1odBEX3qyrw"
         });
       }
 

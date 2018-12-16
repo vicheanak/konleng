@@ -114,14 +114,30 @@ export class AuthServiceProvider {
   updateUserLogin(user){
     return new Promise<Object>((resolve, reject) => {
       this.usersCollection.doc(user.uid).get().subscribe((result) => {
+        console.log('USER RESULT ==> ', result.data());
+        console.log('RESULT EXIST ==> ', user);
         if (!result.exists){
-          this.usersCollection.doc(user.uid).set(user).then((res) => {
+          console.log('NEW USER')
+          let newUser = {
+            displayName: user.displayName,
+            email: user.email,
+            photoURL: user.photoURL,
+            phone1: '',
+            phone2: '',
+            userType: '',
+            uid: user.uid
+          }
+          this.usersCollection.doc(user.uid).set(newUser).then((res) => {
+            console.log('NEW USER CREATED', res);
             this.storage.set('user', JSON.stringify(user));
             this.user = user;
             resolve(user);
+          }).catch((error) => {
+            console.error('ERROR NEW USER', error);
           });
         }
         else{
+          console.log('OLD USER CREATED', result.data());
           let userData = result.data();
           this.storage.set('user', JSON.stringify(userData));
           this.user = user;
@@ -384,10 +400,11 @@ export class AuthServiceProvider {
 
   signOut() {
     return new Promise<Object>((resolve, reject) => {
-      this.firebaseAuth.signOut().then(() => {
-        this.user = null;  
-        this.storage.set('user', null);
-      });
+      
+      this.user = null;  
+      this.storage.set('user', null);
+      resolve(true);
+      
     });
   }
 

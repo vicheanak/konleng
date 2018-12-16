@@ -6,11 +6,11 @@
 <ion-header>
 	<ion-navbar color="primary">
 		<ion-title>{{province?.id | translate}}</ion-title>
-		<!-- <ion-buttons end (click)="presentFilterModal()">
+		<ion-buttons end (click)="presentFilterModal()">
 			<button round ion-button icon-only >
-				<ion-icon name="md-funnel"></ion-icon>
+				<ion-icon name="md-search"></ion-icon>
 			</button>
-		</ion-buttons> -->
+		</ion-buttons>
 	</ion-navbar>
 		<ion-segment mode="md" color="primary" [(ngModel)]="display" (ionChange)="segmentChanged($event)">
 			<ion-segment-button value="list">
@@ -28,12 +28,8 @@
 		<div [ngSwitch]="display">
 			<ion-grid *ngIf="listings.length == 0">
 				<ion-row justify-content-center>
-					<img class="success-img" src="assets/imgs/konleng_cartoon.png">
+					<img class="success-img" src="assets/imgs/konleng_logo.png">
 				</ion-row>
-				<ion-row padding-vertical justify-content-center>
-					{{"NOT_FOUND" | translate}}
-				</ion-row>
-				
 			</ion-grid>
 			<ion-list *ngSwitchCase="'list'">
 				<ion-item (click)="goDetail(listing)" no-padding *ngFor="let listing of listings">
@@ -51,7 +47,5 @@
 			</ion-list>
 			
 		</div>
-		<ion-fab right bottom (click)="presentFilterModal()">
-			<button round ion-fab color="primary"><ion-icon name="md-search"></ion-icon></button>
-		</ion-fab>
+		
 	</ion-content>

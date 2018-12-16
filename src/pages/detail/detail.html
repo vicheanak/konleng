@@ -13,7 +13,7 @@
 
 
 <ion-content no-padding>
-	<ion-fab right top edge>
+	<ion-fab right top>
 		<button round mini ion-fab color="danger" (click)="saveFavorite()"><ion-icon name="{{isFavorite == true ? 'ios-heart' : 'ios-heart-outline'}}"></ion-icon></button>
 	</ion-fab>
 	<ion-slides class="listing-images" pager>
@@ -26,7 +26,7 @@
 	<ion-list  no-lines>
 		<ion-item text-wrap>
 			<h1><span style="color: red">{{listing?.status == 0 ? '(Inactive)' : ''}}</span>{{listing?.title}}</h1>
-			<h3>{{listing?.district | translate}}, {{listing?.province | translate}}</h3>
+			<h3>{{listing?.district | translate}} {{listing?.province | translate}}</h3>
 			<p class="price">${{listing?.price}}</p>
 			
 		</ion-item>

@@ -1,10 +1,10 @@
 export const firebaseConfig = {
   fire: {
-    apiKey: "AIzaSyA_WArEGYJR_tbY3OQBhGBIwdEF5SJyP0k",
-    authDomain: "konleng-firebase.firebaseapp.com",
-    databaseURL: "https://konleng-firebase.firebaseio.com",
-    projectId: "konleng-firebase",
-    storageBucket: "konleng-firebase.appspot.com",
-    messagingSenderId: "751159391935"
+    apiKey: "AIzaSyDOEQi866bba61HGmgJgJ-C0XFMowadThg",
+    authDomain: "konleng-cloud.firebaseapp.com",
+    databaseURL: "https://konleng-cloud.firebaseio.com",
+    projectId: "konleng-cloud",
+    storageBucket: "konleng-cloud.appspot.com",
+    messagingSenderId: "376338125222"
   }
 };

@@ -21,8 +21,8 @@
 
 
 				<ion-item>
-					<ion-label>{{'SELL' | translate}}</ion-label>
-					<ion-radio value="sell"></ion-radio>
+					<ion-label>{{'SALE' | translate}}</ion-label>
+					<ion-radio value="sale"></ion-radio>
 				</ion-item>
 
 				<ion-item>
@@ -59,6 +59,16 @@
 				<ion-item>
 					<ion-label>{{'APARTMENT' | translate}}</ion-label>
 					<ion-radio value="apartment"></ion-radio>
+				</ion-item>
+
+				<ion-item>
+					<ion-label>{{'COMMERCIAL' | translate}}</ion-label>
+					<ion-radio value="commercial"></ion-radio>
+				</ion-item>
+
+				<ion-item>
+					<ion-label>{{'ROOM' | translate}}</ion-label>
+					<ion-radio value="room"></ion-radio>
 				</ion-item>
 
 
@@ -167,11 +177,11 @@
 			</label>
 			<label ion-item no-padding>
 				<ion-label>{{'PHONE' | translate}} 1</ion-label>
-				<ion-input [(ngModel)]="listing.phone1" class="right-align" style="text-align: right;" type="number"></ion-input>
+				<ion-input [(ngModel)]="listing.phone1" class="right-align" style="text-align: right;" type="text"></ion-input>
 			</label>
 			<label ion-item no-padding>
 				<ion-label>{{'PHONE' | translate}} 2</ion-label>
-				<ion-input [(ngModel)]="listing.phone2" class="right-align" style="text-align: right;" type="number"></ion-input>
+				<ion-input [(ngModel)]="listing.phone2" class="right-align" style="text-align: right;" type="text"></ion-input>
 			</label>
 
 			

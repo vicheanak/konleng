@@ -81,7 +81,8 @@ export class ListingProvider {
 	private countsCollection: AngularFirestoreCollection<Count>;
 	private provinces: any = [];
 	private districts: any = [];
-	private queryUrl: string = 'http://localhost:5000/konleng-cloud/us-central1/webApi/'+'api/v1/listings';
+	// private queryUrl: string = 'http://localhost:5000/konleng-cloud/us-central1/webApi/'+'api/v1/listings';
+	private queryUrl: string = 'https://konleng.com/api/v1/listings';
 	listing: Observable<Listing>;
 	constructor(private afStore: AngularFirestore,
 		private afStorage: AngularFireStorage,
@@ -326,12 +327,14 @@ export class ListingProvider {
 
 
 		// this.resetCounter();
+
+
 	}
 
 	resetCounter(){
 		for (let p of this.provinces){
 			let data = {
-				sell: 0,
+				sale: 0,
 				rent: 0,
 				id: p.id,
 				rank: p.rank,
@@ -369,17 +372,46 @@ export class ListingProvider {
 			}
 		}
 	}
-	getAll(province){
+	getAll(filter){
+
+		
+		let queryArray = [];
+		if (filter.property_type){
+			queryArray.push('property_type='+filter.property_type);
+		}
+		if (filter.listing_type){
+			queryArray.push('listing_type='+filter.listing_type);	
+		}
+		if (filter.province){
+			queryArray.push('province='+filter.province);	
+		}
+		if (filter.district){
+			queryArray.push('district='+filter.district);	
+		}
+		if (filter.min_price){
+			queryArray.push('min_price='+filter.min_price);	
+		}
+		if (filter.max_price){
+			queryArray.push('max_price='+filter.max_price);	
+		}
+		if (filter.keyword){
+			queryArray.push('q='+filter.keyword);	
+		}
+		if (filter.sort_by){
+			queryArray.push('sort_by='+filter.sort_by);	
+		}
+		let query = queryArray.join('&');
+		query = this.queryUrl + '?' + query;
 
 		return new Promise<Object>((resolve, reject) => {
 
-			this.http.get(this.queryUrl)
+			this.http.get(query)
 			.subscribe((res) => {
 			  	this.listingsList = [];
 				res['hits'].forEach((listing: Listing) => {
 					this.listingsList.push(listing);
 				});
-				console.log(res['hits']);
+				
 				resolve(this.listingsList);
 			}, (err) => {
 				console.error('err', err);
@@ -413,61 +445,60 @@ export class ListingProvider {
 	// 		});
 	// 	});
 	// }
-	filter(filter){
-		return new Promise<Object>((resolve, reject) => {
-			this.afStore.collection('listings', ref => {
-				let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
-				if (filter.property_type) { query = query.where('property_type', '==', filter.property_type) };
-				if (filter.listing_type) { query = query.where('listing_type', '==', filter.listing_type) };
-				if (filter.province) { query = query.where('province', '==', filter.province) };
-				if (filter.district) { query = query.where('district', '==', filter.district) };
-				if (filter.keyword) { 
-					query = query.orderBy('title').startAt(filter.keyword).endAt(filter.keyword+"\uf8ff");  
-				}
-				else{
-					if (filter.sort_by == 'newest' && !filter.min_price && !filter.max_price){
-						query = query.orderBy('created_date', 'desc');
-					}
-					if (filter.sort_by == 'oldest' && !filter.min_price && !filter.max_price){
-						query = query.orderBy('created_date', 'asc');
-					}
-					if (filter.sort_by == 'highest'){
-						query = query.orderBy('price', 'desc');
-					}
-					if (filter.sort_by == 'lowest'){
-						query = query.orderBy('price', 'asc');
-					}
+	
+	// filter(filter){
+	// 	return new Promise<Object>((resolve, reject) => {
+	// 		this.afStore.collection('listings', ref => {
+	// 			let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+	// 			if (filter.property_type) { query = query.where('property_type', '==', filter.property_type) };
+	// 			if (filter.listing_type) { query = query.where('listing_type', '==', filter.listing_type) };
+	// 			if (filter.province) { query = query.where('province', '==', filter.province) };
+	// 			if (filter.district) { query = query.where('district', '==', filter.district) };
+	// 			if (filter.keyword) { 
+	// 				query = query.orderBy('title').startAt(filter.keyword).endAt(filter.keyword+"\uf8ff");  
+	// 			}
+	// 			else{
+	// 				if (filter.sort_by == 'newest' && !filter.min_price && !filter.max_price){
+	// 					query = query.orderBy('created_date', 'desc');
+	// 				}
+	// 				if (filter.sort_by == 'oldest' && !filter.min_price && !filter.max_price){
+	// 					query = query.orderBy('created_date', 'asc');
+	// 				}
+	// 				if (filter.sort_by == 'highest'){
+	// 					query = query.orderBy('price', 'desc');
+	// 				}
+	// 				if (filter.sort_by == 'lowest'){
+	// 					query = query.orderBy('price', 'asc');
+	// 				}
 
-					if (filter.min_price && filter.sort_by != 'highest' && filter.sort_by != 'lowest'){
-						query = query.orderBy('price').where('price', '>=', parseFloat(filter.min_price));
-					}
-					else if (filter.min_price){
-						if (filter.sort_by == 'highest' || filter.sort_by == 'lowest'){
-							query = query.where('price', '>=', parseFloat(filter.min_price));	
-						}
-					}
-					if (filter.max_price){
-						query = query.where('price', '<=', parseFloat(filter.max_price));
-					}
-				}
+	// 				if (filter.min_price && filter.sort_by != 'highest' && filter.sort_by != 'lowest'){
+	// 					query = query.orderBy('price').where('price', '>=', parseFloat(filter.min_price));
+	// 				}
+	// 				else if (filter.min_price){
+	// 					if (filter.sort_by == 'highest' || filter.sort_by == 'lowest'){
+	// 						query = query.where('price', '>=', parseFloat(filter.min_price));	
+	// 					}
+	// 				}
+	// 				if (filter.max_price){
+	// 					query = query.where('price', '<=', parseFloat(filter.max_price));
+	// 				}
+	// 			}
 
-				
-				
+	// 			query = query.where('status', '==', 1);
 
-				
-				query = query.where('status', '==', 1);
-				return query;
-			})
-			.valueChanges().subscribe((listingsData: Listing[]) => {
-				this.listingsList = [];
-				listingsData.forEach((listing: Listing) => {
-					this.listingsList.push(listing);
+
+	// 			return query;
+	// 		})
+	// 		.valueChanges().subscribe((listingsData: Listing[]) => {
+	// 			this.listingsList = [];
+	// 			listingsData.forEach((listing: Listing) => {
+	// 				this.listingsList.push(listing);
 					
-				});
-				resolve(this.listingsList);
-			});
-		});
-	}
+	// 			});
+	// 			resolve(this.listingsList);
+	// 		});
+	// 	});
+	// }
 	createId(){
 		return new Promise<Object>((resolve, reject) => {
 			const id = this.afStore.createId();
@@ -517,8 +548,8 @@ export class ListingProvider {
 		let countData = {};
 		this.countsCollection.doc(province).get().subscribe((data) => {
 			
-			if (listing_type == 'sell'){
-				countData['sell'] = data.data().sell + 1;
+			if (listing_type == 'sale'){
+				countData['sale'] = data.data().sale + 1;
 			}
 			else if(listing_type == 'rent'){
 				countData['rent'] = data.data().rent + 1;
@@ -531,8 +562,8 @@ export class ListingProvider {
 		let countData = {};
 		this.countsCollection.doc(province).get().subscribe((data) => {
 			
-			if (listing_type == 'sell'){
-				countData['sell'] = data.data().sell - 1;
+			if (listing_type == 'sale'){
+				countData['sale'] = data.data().sale - 1;
 			}
 			else if(listing_type == 'rent'){
 				countData['rent'] = data.data().rent - 1;
@@ -575,8 +606,7 @@ export class ListingProvider {
 				let tmpImages = listing.images;
 				listing.images = [];
 				this.addCount(listing.province, listing.listing_type);
-				console.log('id', id);
-				console.log('listing', listing);
+				
 				this.set(id, listing).then((id) => {
 					listing.id = id;
 					listing.images = tmpImages;
@@ -596,10 +626,10 @@ export class ListingProvider {
 			});
 		});
 	}
-	uploadImagesToFirestore(id, dataUrl){
+	uploadImagesToFirestore(id, dataUrl, index){
 		return new Promise<Object>((resolve, reject) => {
 			const currentTime = new Date().getTime();
-			const storageRef: AngularFireStorageReference = this.afStorage.ref(`listings/${id}/images/${currentTime}.jpg`);
+			const storageRef: AngularFireStorageReference = this.afStorage.ref(`listing_images/${id}_${index}.jpeg`);
 			if (document.URL.startsWith('http')){
 				storageRef.put(dataUrl).then((snapshot) => {
 					storageRef.getDownloadURL().subscribe((url) => {
@@ -610,9 +640,11 @@ export class ListingProvider {
 				});
 			}
 			else{
-				storageRef.putString(dataUrl, 'data_url', {
-					contentType: 'image/jpeg'
-				}).then(() => {
+				let metaData = {
+					contentType: 'image/jpeg',
+					listingUuid: id
+				};
+				storageRef.putString(dataUrl, 'data_url', metaData).then(() => {
 					storageRef.getDownloadURL().subscribe((url: any) => {
 						resolve(url);
 					});
@@ -635,7 +667,7 @@ export class ListingProvider {
 				let image = images[i];
 
 				if (document.URL.startsWith('http')){
-					this.uploadImagesToFirestore(id, image).then((url) => {
+					this.uploadImagesToFirestore(id, image, i).then((url) => {
 						countImg ++;
 						imagesArray.push(url);
 					}).catch((error) => {
@@ -647,7 +679,7 @@ export class ListingProvider {
 	 				filename = filename.split('?')[0];
 	    			let path =  image.substring(0,image.lastIndexOf('/')+1);
 					this.file.readAsDataURL(path, filename).then((dataUrl) => {
-						this.uploadImagesToFirestore(id, dataUrl).then((url) => {
+						this.uploadImagesToFirestore(id, dataUrl, i).then((url) => {
 							countImg ++;
 							imagesArray.push(url);
 						});

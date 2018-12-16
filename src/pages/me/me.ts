@@ -38,7 +38,9 @@ export class MePage {
 	}
 
 	logout() {
-		this.auth.signOut();
+		this.auth.signOut().then((res) => {
+			console.log(res);
+		});
 		
 		// const tabs = this.navCtrl.parent;
 		// tabs.select(1)

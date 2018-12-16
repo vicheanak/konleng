@@ -61,7 +61,7 @@ import { ImagesProvider } from '../../providers/images/images';
  	public imgPreviews: any;
  	private timer: any;
  	public listing: any = {
- 		listing_type: 'sell',
+ 		listing_type: 'sale',
  		property_type: 'apartment',
  		province: 'battambang',
  		district: 'dis',
