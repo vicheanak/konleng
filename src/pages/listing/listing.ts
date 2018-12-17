@@ -157,9 +157,10 @@ import { ServiceProvider } from '../../providers/service/service';
          if (p.id == province){
            this.province = p;
            this.filter.province = p.id;
+           this.filter.listing_type = listing_type;
          }
        }
-       this.listingProvider.getAll({province: this.province.id, listing_type: listing_type}).then((listings) => {
+       this.listingProvider.getFirebaseAll({province: this.province.id, listing_type: listing_type}).then((listings) => {
          this.location = new LatLng(this.province.lat, this.province.lng);
          this.listings = listings;
          this.refreshLocations();
@@ -241,175 +242,182 @@ import { ServiceProvider } from '../../providers/service/service';
      catch(e){
      }
    }
-// https://firebasestorage.googleapis.com/v0/b/konleng-cloud.appspot.com/o/blue-dot.png?alt=media&token=79ea3640-d17c-445e-82be-7a6e01fbdb66
+   // doInfinite(infiniteScroll) {
+   //   console.log('Begin async operation');
+   //   this.listingProvider.getAll(this.filter).then((listings) => {
+   //     this.listings.push(listings);
+   //     infiniteScroll.complete();
+   //   });
+   // }
+   // https://firebasestorage.googleapis.com/v0/b/konleng-cloud.appspot.com/o/blue-dot.png?alt=media&token=79ea3640-d17c-445e-82be-7a6e01fbdb66
    addMarkers() {
      let markersWindows = [];
      let markerCluster = this.map.addMarkerCluster({
        markers: this.locations,
        icons: [
-           {
-             url: "/assets/imgs/cluster.png", 
-             anchor: {x: 16, y: 16},
-             label: {
-               color: 'white',
-               bold: true,
-               fontSize: 13
-             } as MarkerLabel
-           }
-         ]
-       }).then((marker) => {
-          marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe((params) => {
-            
-            let loc = params[1].get('listing');
-            this.presentDetailModal(loc);
-          }); 
-       });
-      // for(let i = 0; i < this.locations.length; i ++){
-      //   let markerSync = this.map.addMarker(this.locations[i]).then((marker) => {
-      //     marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe((params) => {
-      //       let loc = this.locations[i];
-      //       this.presentDetailModal(loc);
-      //     }); 
-      //   });
-      // } 
-     
-   }
-
-   goDetail(listing){
-
-     this.navCtrl.push(DetailPage, {
-       listing: listing,
-       user_id: listing.user_id
-     }, {animate: false});
-   }
-   presentFilterModal() {
-     let filterModal = this.modalCtrl.create(FilterModal, { filter: this.filter });
-     filterModal.onDidDismiss(data => {
-       if (!data.close){
-         this.listings = data.listing;
-         this.refreshLocations();
-         if (this.display == 'map'){
-           this.map.clear().then(() => {
-             this.addMarkers();
-           });  
-         }
-         this.filter = data.filter;
-
-         if (!data.filter.province){
-           this.province = '';
-         }
-         for (let p of this.provinces){
-           if (p.id == this.filter.province){
-             this.province = p;
-           }
-         }
-
+       {
+         url: "https://firebasestorage.googleapis.com/v0/b/konleng-cloud.appspot.com/o/cluster.png?alt=media&token=f76f7250-098a-45d5-8a6d-3fcd753bc718", 
+         anchor: {x: 16, y: 16},
+         label: {
+           color: 'white',
+           bold: true,
+           fontSize: 13
+         } as MarkerLabel
        }
+       ]
+     }).then((marker) => {
+       marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe((params) => {
 
+         let loc = params[1].get('listing');
+         this.presentDetailModal(loc);
+       }); 
      });
-     filterModal.present();
-   }
-   presentDetailModal(listing) {
-     try{
-       let data = { goDetail: false, close: true };
-       this.detailModal.dismiss(data);
-     }catch(e){
-     }
-     this.detailModal = this.modalCtrl.create(DetailModal, { listing: listing }, {cssClass: 'detail-modal' });
-     this.detailModal.onDidDismiss(data => {
+     // for(let i = 0; i < this.locations.length; i ++){
+       //   let markerSync = this.map.addMarker(this.locations[i]).then((marker) => {
+         //     marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe((params) => {
+           //       let loc = this.locations[i];
+           //       this.presentDetailModal(loc);
+           //     }); 
+           //   });
+           // } 
 
-       if (data){
-         if (data.goDetail){
+         }
+
+         goDetail(listing){
+
            this.navCtrl.push(DetailPage, {
-             listing: data.listing,
-             user_id: data.listing.user_id
-           },{animate: false});
-         }  
+             listing: listing,
+             user_id: listing.user_id
+           }, {animate: false});
+         }
+         presentFilterModal() {
+           let filterModal = this.modalCtrl.create(FilterModal, { filter: this.filter });
+           filterModal.onDidDismiss(data => {
+             if (!data.close){
+               this.listings = data.listing;
+               this.refreshLocations();
+               if (this.display == 'map'){
+                 this.map.clear().then(() => {
+                   this.addMarkers();
+                 });  
+               }
+               this.filter = data.filter;
+
+               if (!data.filter.province){
+                 this.province = '';
+               }
+               for (let p of this.provinces){
+                 if (p.id == this.filter.province){
+                   this.province = p;
+                 }
+               }
+
+             }
+
+           });
+           filterModal.present();
+         }
+         presentDetailModal(listing) {
+           try{
+             let data = { goDetail: false, close: true };
+             this.detailModal.dismiss(data);
+           }catch(e){
+           }
+           this.detailModal = this.modalCtrl.create(DetailModal, { listing: listing }, {cssClass: 'detail-modal' });
+           this.detailModal.onDidDismiss(data => {
+
+             if (data){
+               if (data.goDetail){
+                 this.navCtrl.push(DetailPage, {
+                   listing: data.listing,
+                   user_id: data.listing.user_id
+                 },{animate: false});
+               }  
+             }
+
+
+           });
+           this.detailModal.present();
+         }
        }
+       @Component({
+         selector: 'page-listing',
+         templateUrl: 'filter.html'
+       })
+       export class FilterModal {
+         public priceRange: any;
+         public provinces: any = [];
+         public districts: any = [];
+         private filter: any = {
+           sort_by: '',
+           keyword: '',
+           listing_type: '',
+           property_type: '',
+           province: '',
+           district: '',
+           min_price: '',
+           max_price: ''
+         };
+         constructor(params: NavParams, 
+           public viewCtrl: ViewController,
+           private listingProvider: ListingProvider) {
+
+           this.filter = params.get('filter');
+           this.provinces = this.listingProvider.getProvinces();
+           this.districts = this.listingProvider.getDistricts(this.filter.province);
+         }
+         dismiss() {
+           let data = { 'close': true };
+           this.viewCtrl.dismiss(data);
+         }
+
+         resetFilter(){
+           this.filter = {
+             sort_by: '',
+             keyword: '',
+             listing_type: '',
+             property_type: '',
+             province: '',
+             district: '',
+             min_price: '',
+             max_price: ''
+           };
+         }
+
+         search(){
+           this.listingProvider.getAll(this.filter).then((listings) => {
+             let data = {listing: listings, filter: this.filter};
+             this.viewCtrl.dismiss(data);
+           });
+         }
+
+         provinceChange(){
+           this.districts = this.listingProvider.getDistricts(this.filter.province);
+         }
+       }
+       @Component({
+         selector: 'page-listing',
+         templateUrl: 'detail.html'
+       })
+       export class DetailModal {
+         public priceRange: any;
+         private listing: any;
+         constructor(private params: NavParams, public navCtrl: NavController, private sanitizer: DomSanitizer, public viewCtrl: ViewController) {
 
 
-     });
-     this.detailModal.present();
-   }
- }
- @Component({
-   selector: 'page-listing',
-   templateUrl: 'filter.html'
- })
- export class FilterModal {
-   public priceRange: any;
-   public provinces: any = [];
-   public districts: any = [];
-   private filter: any = {
-     sort_by: '',
-     keyword: '',
-     listing_type: '',
-     property_type: '',
-     province: '',
-     district: '',
-     min_price: '',
-     max_price: ''
-   };
-   constructor(params: NavParams, 
-     public viewCtrl: ViewController,
-     private listingProvider: ListingProvider) {
-
-     this.filter = params.get('filter');
-     this.provinces = this.listingProvider.getProvinces();
-     this.districts = this.listingProvider.getDistricts(this.filter.province);
-   }
-   dismiss() {
-     let data = { 'close': true };
-     this.viewCtrl.dismiss(data);
-   }
-
-   resetFilter(){
-     this.filter = {
-       sort_by: '',
-       keyword: '',
-       listing_type: '',
-       property_type: '',
-       province: '',
-       district: '',
-       min_price: '',
-       max_price: ''
-     };
-   }
-
-   search(){
-     this.listingProvider.getAll(this.filter).then((listings) => {
-       let data = {listing: listings, filter: this.filter};
-       this.viewCtrl.dismiss(data);
-     });
-   }
-
-   provinceChange(){
-     this.districts = this.listingProvider.getDistricts(this.filter.province);
-   }
- }
- @Component({
-   selector: 'page-listing',
-   templateUrl: 'detail.html'
- })
- export class DetailModal {
-   public priceRange: any;
-   private listing: any;
-   constructor(private params: NavParams, public navCtrl: NavController, private sanitizer: DomSanitizer, public viewCtrl: ViewController) {
-
-
-   }
-   ionViewDidEnter(){
-     this.listing = this.params.get('listing');
-   }
-   getBackground(image) {
-     return this.sanitizer.bypassSecurityTrustStyle(`url(${image})`);
-   }
-   dismiss() {
-     let data = { goDetail: false, close: true };
-     this.viewCtrl.dismiss(data);
-   }
-   goDetail(listing){
-     let data = {goDetail: true, listing: listing};
-     this.viewCtrl.dismiss(data);
-   }
- }
+         }
+         ionViewDidEnter(){
+           this.listing = this.params.get('listing');
+         }
+         getBackground(image) {
+           return this.sanitizer.bypassSecurityTrustStyle(`url(${image})`);
+         }
+         dismiss() {
+           let data = { goDetail: false, close: true };
+           this.viewCtrl.dismiss(data);
+         }
+         goDetail(listing){
+           let data = {goDetail: true, listing: listing};
+           this.viewCtrl.dismiss(data);
+         }
+       }

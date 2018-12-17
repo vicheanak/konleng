@@ -18,7 +18,7 @@
 		<ion-row>
 			<ion-col *ngFor="let key of objectKeys(imgPreviews)" col-4 style="background-size:cover; background-position: center bottom;border: 2px solid white;">
 				<label ion-item no-padding class="image-label">
-					<ion-label id="profile_image" color="primary" stacked><img class="listing-img" [src]="imgPreviews[key].src"></ion-label>
+					<ion-label id="profile_image" color="primary" stacked><img class="listing-img" [src]="imgPreviews[key]?.src"></ion-label>
 					<ion-input style="display: none" type="file" accept="image/*" (change)="addImage($event, key)"></ion-input>
 				</label>
 			</ion-col>
@@ -29,7 +29,7 @@
 		<ion-item>
 			<ion-label>{{"LISTING_TYPE" | translate}}</ion-label>
 			<ion-select [(ngModel)]="listing.listing_type" interface="popover">
-				<ion-option value="sale">{{"sale" | translate}}</ion-option>
+				<ion-option value="sale">{{"SALE" | translate}}</ion-option>
 				<ion-option value="rent">{{"RENT" | translate}}</ion-option>
 			</ion-select>
 		</ion-item>
@@ -39,6 +39,8 @@
 				<ion-option value="house">{{"HOUSE" | translate}}</ion-option>
 				<ion-option value="apartment">{{"APARTMENT" | translate}}</ion-option>
 				<ion-option value="land">{{"LAND" | translate}}</ion-option>
+				<ion-option value="commercial">{{"COMMERCIAL" | translate}}</ion-option>
+				<ion-option value="room">{{"ROOM" | translate}}</ion-option>
 			</ion-select>
 		</ion-item>
 		<ion-item>

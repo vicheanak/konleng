@@ -95,13 +95,21 @@ export class AuthServiceProvider {
 
   signInWithEmail(credentials) {
     return new Promise<Object>((resolve, reject) => {
-      this.firebaseAuth.signInWithEmailAndPassword(credentials.email, credentials.password).then((user) => {
-        this.updateUserLogin(user).then((userData) => {
-          resolve(user);
+      this.afAuth.auth.signInWithEmailAndPassword(credentials.email, credentials.password).then((result) => {
+        console.log('signin', JSON.stringify(result));
+        this.updateUserLogin(result.user).then((userData) => {
+          resolve(result.user);
         });
-      }).catch((error) => {
-        reject(error);
+      }, (error) => {
+        console.error('Error Auth', JSON.stringify(error));
       });
+      // this.firebaseAuth.signInWithEmailAndPassword(credentials.email, credentials.password).then((user) => {
+      //   this.updateUserLogin(user).then((userData) => {
+      //     resolve(user);
+      //   });
+      // }).catch((error) => {
+      //   reject(error);
+      // });
     });
 
   }
@@ -164,7 +172,8 @@ export class AuthServiceProvider {
   loginWithFacebook(){
 
     return new Promise<Object>((resolve, reject) => {
-      if (document.URL.startsWith('http')){
+      if (document.URL.startsWith('https')){
+        console.log('==========WEBSITE==========');
         let provider = new firebase.auth.FacebookAuthProvider();
         provider.setCustomParameters({
           'display': 'popup'
@@ -183,6 +192,7 @@ export class AuthServiceProvider {
           console.log('credential', credential);
         })
       } else {
+        console.log('==========APP==========');
         this.facebook.login(['public_profile', 'email'])
         .then( (res: FacebookLoginResponse) => {
 
@@ -212,13 +222,22 @@ export class AuthServiceProvider {
 
   signInWithFacebook(token) {
     return new Promise<Object>((resolve, reject) => {
-      this.firebaseAuth.signInWithFacebook(token).then((user) => {
-        this.updateUserLogin(user).then((userData) => {
-          resolve(user);
+      let credential = firebase.auth.FacebookAuthProvider.credential(token);
+      this.afAuth.auth.signInAndRetrieveDataWithCredential(credential).then((result) => {
+        this.updateUserLogin(result.user).then((userData) => {
+          resolve(result.user);
         });
-      }).catch((e) => {
-        reject(e);
+      }, (error) => {
+        console.error('Error Auth', JSON.stringify(error));
       });
+      // this.firebaseAuth.signInWithFacebook(token).then((user) => {
+      //   console.log(JSON.stringify(user));
+      //   this.updateUserLogin(user).then((userData) => {
+      //     resolve(user);
+      //   });
+      // }).catch((e) => {
+      //   reject(e);
+      // });
     });
   }
 
@@ -226,6 +245,9 @@ export class AuthServiceProvider {
     return new Promise<Object>((resolve, reject) => {
       this.afAuth.auth.createUserWithEmailAndPassword(credentials.email, credentials.password).then((user) => {
         this.storage.set('user', JSON.stringify(user));
+        resolve(user);
+      }).catch((error) => {
+        reject(error);
       });
     });
   }

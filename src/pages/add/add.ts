@@ -25,7 +25,7 @@ import {
 	GoogleMapsAnimation,
 	Environment
 } from '@ionic-native/google-maps';
-import { ImagePicker } from '@ionic-native/image-picker';
+
 import { Base64 } from '@ionic-native/base64';
 import { AngularFireStorage, AngularFireStorageReference } from 'angularfire2/storage';
 import { ImageResizer, ImageResizerOptions } from '@ionic-native/image-resizer';
@@ -74,26 +74,26 @@ import { ImagesProvider } from '../../providers/images/images';
  	private mapEnvironment: Environment;
  	public imgPreviews: any;
  	public listing: any = {
- 		listing_type: 'sale',
- 		property_type: 'house',
- 		province: 'phnom-penh',
- 		district: 'doun-penh',
- 		title: 'New House for Sale in PP',
- 		price: 2000,
- 		description: 'New House in PP',
- 		bedrooms: 2,
- 		bathrooms: 3,
- 		size: '32',
- 		phone1: '01222121',
- 		phone2: '02121321',
+ 		listing_type: '',
+ 		property_type: '',
+ 		province: '',
+ 		district: '',
+ 		title: '',
+ 		price: '',
+ 		description: '',
+ 		bedrooms: '',
+ 		bathrooms: '',
+ 		size: '',
+ 		phone1: '',
+ 		phone2: '',
  		images: [],
- 		address: 'Phnom Penh',
- 		lat: 12.2121,
- 		lng: 32.2121,
- 		email: 'vicheanak@gmail.com',
- 		user_id: 'ptPNzyfozJaDzSA0eQ3IahuyXbf1',
+ 		address: '',
+ 		lat: '',
+ 		lng: '',
+ 		email: '',
+ 		user_id: '',
  		thumb: '',
- 		displayName: 'Den Cambodia',
+ 		displayName: '',
  		user_name: '',
  	};
  	imgPreview: any;
@@ -111,7 +111,6 @@ import { ImagesProvider } from '../../providers/images/images';
  		public renderer: Renderer2,
  		private cf: ChangeDetectorRef,
  		private nativeGeocoder: NativeGeocoder,
- 		private imagePicker: ImagePicker,
  		private base64: Base64,
  		private sanitizer: DomSanitizer,
  		private camera: Camera,
@@ -129,7 +128,7 @@ import { ImagesProvider } from '../../providers/images/images';
  		this.location = new LatLng(11.556492, 104.934909);
  		this.provinces = this.listingProvider.getProvinces();
 
- 		if (document.URL.startsWith('http')){
+ 		if (document.URL.startsWith('https')){
  			this.isWeb = true;
  		}
 
@@ -336,13 +335,9 @@ import { ImagesProvider } from '../../providers/images/images';
 
  			this.imgPreviews[key]['hasImg'] = true;
 
- 		}).catch((error) => {
- 			console.error('ERROR readData', error);
+ 		}, (error) => {
+ 			console.error('ERROR CAMERA', error);
  		});
-
-
-
-
 
 
  	}
@@ -350,7 +345,8 @@ import { ImagesProvider } from '../../providers/images/images';
  		this.listing.listing_type = listing_type;
  	}
  	addImage(event, key) {
- 		if (document.URL.startsWith('http')){
+ 		if (document.URL.startsWith('https')){
+ 			console.log('=====WEB====');
  			this.imagesProvider.handleImageSelection(event).subscribe((res) =>{
  				this._SUFFIX 			= res.split(':')[1].split('/')[1].split(";")[0];
  				if(this.imagesProvider.isCorrectFileType(this._SUFFIX)){
@@ -364,7 +360,7 @@ import { ImagesProvider } from '../../providers/images/images';
  			});
  		}
  		else{
-
+ 			console.log('=====APP====', key);
  			this.actionSheetButtons = [
  			{
  				text: 'Camera',
@@ -403,7 +399,7 @@ import { ImagesProvider } from '../../providers/images/images';
  	}
  	getGeocoder(location){
  		
- 		if (document.URL.startsWith('http')){
+ 		if (document.URL.startsWith('https')){
  			let loc = location + ', Cambodia';
 	 		this.serviceProvider.getGeocode(loc).then((coordinates) => {
 	 			this.location = new LatLng(parseFloat(coordinates['lat']), parseFloat(coordinates['lng']));
@@ -550,9 +546,10 @@ import { ImagesProvider } from '../../providers/images/images';
  			this.auth.updatePhonenumbers(this.listing);
  			this.listingProvider.add(this.listing).then((listing) => {
  				console.log('this.listing.images', this.listing.images);
+ 				console.log('listing', JSON.stringify(listing));
  				if (this.listing.images.length > 0){
  					this.listingProvider.updateImages(listing['id'], this.listing.images).then((imgs) => {
- 						console.log('imgs', imgs);
+ 						console.log('Images return ==> ', JSON.stringify(imgs));
  						this.listing.images = imgs;
  						this.listingProvider.update(listing['id'], this.listing).then((listing) => {
 

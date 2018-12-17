@@ -25,7 +25,7 @@ import { NativePageTransitions, NativeTransitionOptions } from '@ionic-native/na
     }
 
     transition(){
-      if (!document.URL.startsWith('http')){
+      if (!document.URL.startsWith('https')){
         let options: NativeTransitionOptions = {
           duration: 300,
           slowdownfactor: 3,

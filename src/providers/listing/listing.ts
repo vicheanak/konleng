@@ -327,7 +327,15 @@ export class ListingProvider {
 
 
 		// this.resetCounter();
+		// let listing = {
+		// 	id: ,
+		// 	province: ,
+		// 	listing_type: ,
+		// }
+		// this.deleteListing(listing).then((success) => {
 
+		// })
+	
 
 	}
 
@@ -371,6 +379,29 @@ export class ListingProvider {
 				return d;
 			}
 		}
+	}
+	getFirebaseAll(filter){
+		return new Promise<Object>((resolve, reject) => {
+			this.afStore.collection('listings', ref => {
+				let query: firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
+				
+				if (filter.listing_type) { query = query.where('listing_type', '==', filter.listing_type) };
+				if (filter.province) { query = query.where('province', '==', filter.province) };
+				query = query.orderBy('created_date', 'desc');
+				query = query.limit(200);
+				query = query.where('status', '==', 1);
+
+
+				return query;
+			})
+			.valueChanges().subscribe((listingsData: Listing[]) => {
+				this.listingsList = [];
+				listingsData.forEach((listing: Listing) => {
+					this.listingsList.push(listing);
+				});
+				resolve(this.listingsList);
+			});
+		});
 	}
 	getAll(filter){
 
@@ -630,7 +661,7 @@ export class ListingProvider {
 		return new Promise<Object>((resolve, reject) => {
 			const currentTime = new Date().getTime();
 			const storageRef: AngularFireStorageReference = this.afStorage.ref(`listing_images/${id}_${index}.jpeg`);
-			if (document.URL.startsWith('http')){
+			if (document.URL.startsWith('https')){
 				storageRef.put(dataUrl).then((snapshot) => {
 					storageRef.getDownloadURL().subscribe((url) => {
 						resolve(url);
@@ -649,6 +680,7 @@ export class ListingProvider {
 						resolve(url);
 					});
 				}).catch((msg) => {
+					console.error('ERROR STORAGE', JSON.stringify(msg));
 					reject(msg);
 				});
 			}
@@ -666,20 +698,25 @@ export class ListingProvider {
 			for(let i = 0; i < images.length; i ++){
 				let image = images[i];
 
-				if (document.URL.startsWith('http')){
+				if (document.URL.startsWith('https')){
 					this.uploadImagesToFirestore(id, image, i).then((url) => {
 						countImg ++;
 						imagesArray.push(url);
-					}).catch((error) => {
-						console.log('ERROR HTTP', error);
+					}, (error) => {
+						console.error('ERROR UPLOAD IMAGE', JSON.stringify(error));
 					});
 				}
 				else{
 					let filename = image.substring(image.lastIndexOf('/')+1);
+					console.log('filename', JSON.stringify(filename));
 	 				filename = filename.split('?')[0];
+	 				console.log('filename split', JSON.stringify(filename));
 	    			let path =  image.substring(0,image.lastIndexOf('/')+1);
+	    			console.log('path', JSON.stringify(path));
 					this.file.readAsDataURL(path, filename).then((dataUrl) => {
+						console.log('dataUrl + id: '+ id);
 						this.uploadImagesToFirestore(id, dataUrl, i).then((url) => {
+							console.log('url', url);
 							countImg ++;
 							imagesArray.push(url);
 						});
@@ -729,10 +766,12 @@ export class ListingProvider {
 					query = query.where('user_id', '==', user_id);
 					query = query.where('status', '==', status);
 					return query;
-				}).valueChanges().subscribe((listingsData: Listing[]) => {
+				}).snapshotChanges().subscribe((listingsData) => {
 					this.listingsList = [];
-					listingsData.forEach((listing: Listing) => {
-						this.listingsList.push(listing);
+					listingsData.map((listing) => {
+						let data = listing.payload.doc.data();
+						data['id'] = listing.payload.doc.id;
+						this.listingsList.push(data);
 					});
 					resolve(this.listingsList);
 				});

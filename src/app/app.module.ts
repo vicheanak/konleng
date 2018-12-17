@@ -45,7 +45,7 @@ import { GoogleMaps } from '@ionic-native/google-maps';
 
 import { NativeGeocoder } from '@ionic-native/native-geocoder';
 
-import { ImagePicker } from '@ionic-native/image-picker';
+
 import { Base64 } from '@ionic-native/base64';
 
 import { Camera, CameraOptions } from '@ionic-native/camera';
@@ -69,6 +69,8 @@ import { ImageResizer } from '@ionic-native/image-resizer';
 
 import { File } from '@ionic-native/file';
 
+
+
 import { PhotoViewer } from '@ionic-native/photo-viewer';
 import { CallNumber } from '@ionic-native/call-number';
 import { EmailComposer } from '@ionic-native/email-composer';
@@ -81,6 +83,8 @@ import { Device } from '@ionic-native/device';
 import { IonicImageViewerModule, ImageViewerComponent, ImageViewerController } from 'ionic-img-viewer';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { ImagesProvider } from '../providers/images/images';
+import { Pro } from '@ionic/pro';
+
 
 
 @NgModule({
@@ -165,7 +169,6 @@ import { ImagesProvider } from '../providers/images/images';
     SplashScreen,
     GoogleMaps,
     NativeGeocoder,
-    ImagePicker,
     Base64,
     Camera,
     AngularFireAuth,

@@ -27,7 +27,7 @@ export class SearchPage {
 
   	this.queryText = '';
 
-    if (document.URL.startsWith('http')){
+    if (document.URL.startsWith('https')){
       this.isWeb = true;
     }
     

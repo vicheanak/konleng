@@ -23,7 +23,7 @@ import {
 	GoogleMapsAnimation,
 	Environment
 } from '@ionic-native/google-maps';
-import { ImagePicker } from '@ionic-native/image-picker';
+
 import { Base64 } from '@ionic-native/base64';
 import { AngularFireStorage, AngularFireStorageReference } from 'angularfire2/storage';
 import { ImageResizer, ImageResizerOptions } from '@ionic-native/image-resizer';
@@ -97,7 +97,6 @@ import { ImagesProvider } from '../../providers/images/images';
  		public renderer: Renderer2,
  		private cf: ChangeDetectorRef,
  		private nativeGeocoder: NativeGeocoder,
- 		private imagePicker: ImagePicker,
  		private base64: Base64,
  		private sanitizer: DomSanitizer,
  		private camera: Camera,
@@ -279,7 +278,7 @@ import { ImagesProvider } from '../../providers/images/images';
  		this.listing.listing_type = listing_type;
  	}
  	addImage(event, key) {
- 		if (document.URL.startsWith('http')){
+ 		if (document.URL.startsWith('https')){
  			this.imagesProvider.handleImageSelection(event).subscribe((res) =>{
 				this.listing.images[key] = event.target.files[0];
 				this.imgPreviews[key].src = res;
@@ -327,7 +326,7 @@ import { ImagesProvider } from '../../providers/images/images';
  	}
  	getGeocoder(location){
 
- 		if (document.URL.startsWith('http')){
+ 		if (document.URL.startsWith('https')){
  			let loc = location + ', Cambodia';
  			this.serviceProvider.getGeocode(loc).then((coordinates) => {
  				this.location = new LatLng(parseFloat(coordinates['lat']), parseFloat(coordinates['lng']));
@@ -379,7 +378,13 @@ import { ImagesProvider } from '../../providers/images/images';
  			{id: 6, src: '../assets/imgs/image_blank.png', hasImg: false}
  			];
 
+ 			if (this.listing.images.length > 6){
+ 				this.listing.images = this.listing.images.slice(0,6);
+ 			}
+
  			for (let i = 0; i < this.listing.images.length; i ++){
+ 				console.log(i);
+ 				console.log(this.imgPreviews[i]);
  				this.imgPreviews[i].src = this.listing.images[i];
  				this.imgPreviews[i].hasImg = true;
  			}
@@ -449,7 +454,7 @@ import { ImagesProvider } from '../../providers/images/images';
  			this.tmpCloudImages = [];
 
  			for (let i = 0; i < this.listing.images.length; i ++){
- 				if (document.URL.startsWith('http')){
+ 				if (document.URL.startsWith('https')){
  					let type = typeof this.listing.images[i];
  					if (type == 'string'){
  						if (this.listing.images[i].indexOf('firebasestorage.googleapis.com') > 0){

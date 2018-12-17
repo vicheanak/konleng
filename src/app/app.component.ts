@@ -13,6 +13,7 @@ import { AuthServiceProvider } from '../providers/auth/auth';
 import { ServiceProvider } from '../providers/service/service';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { Environment } from '@ionic-native/google-maps';
+import { Pro } from '@ionic/pro';
 
 @Component({
   templateUrl: 'app.html'
@@ -32,11 +33,15 @@ export class MyApp {
     private screenOrientation: ScreenOrientation) {
 
     this.auth.getRedirectResult();
-
+    splashScreen.show();
+    this.configureDeploy();
+    this.performAutomaticUpdate();
 
     platform.ready().then(() => {
 
-      if (document.URL.startsWith('http')){
+
+
+      if (document.URL.startsWith('https')){
         Environment.setEnv({
           API_KEY_FOR_BROWSER_RELEASE: "AIzaSyBUuXZ2zRqiAzdOvSvc6YGN1odBEX3qyrw",
           API_KEY_FOR_BROWSER_DEBUG: "AIzaSyBUuXZ2zRqiAzdOvSvc6YGN1odBEX3qyrw"
@@ -68,6 +73,32 @@ export class MyApp {
 
   }
 
+  async configureDeploy() {
+    const config = {
+      'appId': 'f30489f0',
+      'channel': 'Master'
+    }
+    await Pro.deploy.configure(config);
+  }
+
+  async performAutomaticUpdate() {
+    try {
+      const currentVersion = await Pro.deploy.getCurrentVersion();
+      const resp = await Pro.deploy.sync({updateMethod: 'auto'});
+      if (currentVersion.versionId !== resp.versionId){
+        console.log('We found an update, and are in process of redirecting you since you put auto!');
+        // We found an update, and are in process of redirecting you since you put auto!
+      }else{
+        // No update available
+        console.log('No update available');
+      }
+    } catch (err) {
+      // We encountered an error.
+      // Here's how we would log it to Ionic Pro Monitoring while also catching:
+      console.error('Error update', err);
+      Pro.monitoring.exception(err);
+    }
+  }
   
 
 
