@@ -62,7 +62,6 @@ import { AuthServiceProvider } from '../providers/auth/auth';
 import { Facebook } from '@ionic-native/facebook';
 
 
-import { FirebaseAuthentication } from '@ionic-native/firebase-authentication';
 import { ListingProvider } from '../providers/listing/listing';
 import { AngularFireStorage, AngularFireStorageReference } from 'angularfire2/storage';
 import { ImageResizer } from '@ionic-native/image-resizer';
@@ -83,9 +82,9 @@ import { Device } from '@ionic-native/device';
 import { IonicImageViewerModule, ImageViewerComponent, ImageViewerController } from 'ionic-img-viewer';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { ImagesProvider } from '../providers/images/images';
-import { Pro } from '@ionic/pro';
-
-
+import { HotCodePush } from '@ionic-native/hot-code-push';
+import { FcmProvider } from '../providers/fcm/fcm';
+import { Firebase } from '@ionic-native/firebase';
 
 @NgModule({
   declarations: [
@@ -177,7 +176,6 @@ import { Pro } from '@ionic/pro';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthServiceProvider,
     Facebook,
-    FirebaseAuthentication,
     AngularFireStorage,
     ListingProvider,
     ImageResizer,
@@ -191,7 +189,10 @@ import { Pro } from '@ionic/pro';
     Device,
     ImageViewerController,
     ScreenOrientation,
-    ImagesProvider
+    ImagesProvider,
+    HotCodePush,
+    FcmProvider,
+    Firebase
   ]
 })
 export class AppModule {

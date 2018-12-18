@@ -148,7 +148,7 @@ import { ServiceProvider } from '../../providers/service/service';
      }
    }
 
-   ionViewDidEnter() {
+   ionViewDidLoad() {
 
      let province = this.navParams.get('province');
      let listing_type = this.navParams.get('listing_type');

@@ -604,6 +604,16 @@ export class ListingProvider {
 			
 		});
 	}
+	getListing(id){
+		return new Promise<Object>((resolve, reject) => {
+			this.listingsCollection.doc(id).snapshotChanges().subscribe((listingsData) => {
+				let data = listingsData.payload.data();
+				data['id'] = listingsData.payload.id;
+				console.log(JSON.stringify(data));
+				resolve(data);
+			});
+		});
+	}
 	set(id, listing){
 		return new Promise<Object>((resolve, reject) => {
 			listing.price = parseFloat(listing.price);

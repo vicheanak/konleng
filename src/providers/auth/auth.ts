@@ -9,7 +9,6 @@ import { Storage } from '@ionic/storage';
 
 import { AngularFireStorage, AngularFireStorageReference } from 'angularfire2/storage';
 
-import { FirebaseAuthentication } from '@ionic-native/firebase-authentication';
 import { Observable, from, forkJoin } from 'rxjs';
 
 import { map, tap, take, switchMap, mergeMap, expand, takeWhile } from 'rxjs/operators';
@@ -56,7 +55,6 @@ export class AuthServiceProvider {
     public facebook: Facebook,
     public http: HttpClient, 
     public afAuth: AngularFireAuth,
-    public firebaseAuth: FirebaseAuthentication,
     private storage: Storage,
     private afStore: AngularFirestore,
     private afStorage: AngularFireStorage,
@@ -115,9 +113,7 @@ export class AuthServiceProvider {
   }
 
 
-  getToken(){
-    return this.firebaseAuth.getIdToken(true);
-  }
+  
 
   updateUserLogin(user){
     return new Promise<Object>((resolve, reject) => {

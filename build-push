@@ -1,0 +1,8 @@
+#!/bin/bash
+gulp +v
+ionic cordova build android --prod --release -- -- --minSdkVersion=19
+cordova-hcp build
+~/Documents/konleng_functions
+cp -r www/* ../konleng_functions/public/updates
+cd ../konleng_functions/
+firebase deploy --only hosting

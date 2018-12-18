@@ -8,7 +8,7 @@
 
 	<ion-navbar color="primary">
 		<ion-title>{{listing?.title}}</ion-title>
-		<ion-buttons end (click)="goEdit()">
+		<ion-buttons *ngIf="isOwner == true" end (click)="goEdit()">
 			<button round ion-button icon-only >
 				<ion-icon name="md-create"></ion-icon>
 			</button>

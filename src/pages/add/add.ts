@@ -124,7 +124,7 @@ import { ImagesProvider } from '../../providers/images/images';
  		private serviceProvider: ServiceProvider,
  		private imagesProvider: ImagesProvider,
  		private alertCtrl: AlertController) {
- 		this.imgPreview = '../assets/imgs/image_blank.jpg';
+ 		this.imgPreview = 'assets/imgs/image_blank.jpg';
  		this.location = new LatLng(11.556492, 104.934909);
  		this.provinces = this.listingProvider.getProvinces();
 
@@ -133,12 +133,12 @@ import { ImagesProvider } from '../../providers/images/images';
  		}
 
  		this.imgPreviews = [
- 		{id: 1, src: '../assets/imgs/image_blank.png', hasImg: false},
- 		{id: 2, src: '../assets/imgs/image_blank.png', hasImg: false},
- 		{id: 3, src: '../assets/imgs/image_blank.png', hasImg: false},
- 		{id: 4, src: '../assets/imgs/image_blank.png', hasImg: false},
- 		{id: 5, src: '../assets/imgs/image_blank.png', hasImg: false},
- 		{id: 6, src: '../assets/imgs/image_blank.png', hasImg: false}
+ 		{id: 1, src: 'assets/imgs/image_blank.png', hasImg: false},
+ 		{id: 2, src: 'assets/imgs/image_blank.png', hasImg: false},
+ 		{id: 3, src: 'assets/imgs/image_blank.png', hasImg: false},
+ 		{id: 4, src: 'assets/imgs/image_blank.png', hasImg: false},
+ 		{id: 5, src: 'assets/imgs/image_blank.png', hasImg: false},
+ 		{id: 6, src: 'assets/imgs/image_blank.png', hasImg: false}
  		] ;		
  	}
 
@@ -232,12 +232,12 @@ import { ImagesProvider } from '../../providers/images/images';
  		// this.listing.user_name = this.user.displayName ? this.user.displayName : '';
 
  		this.imgPreviews = [
- 		{id: 1, src: '../assets/imgs/image_blank.png', hasImg: false},
- 		{id: 2, src: '../assets/imgs/image_blank.png', hasImg: false},
- 		{id: 3, src: '../assets/imgs/image_blank.png', hasImg: false},
- 		{id: 4, src: '../assets/imgs/image_blank.png', hasImg: false},
- 		{id: 5, src: '../assets/imgs/image_blank.png', hasImg: false},
- 		{id: 6, src: '../assets/imgs/image_blank.png', hasImg: false}
+ 		{id: 1, src: 'assets/imgs/image_blank.png', hasImg: false},
+ 		{id: 2, src: 'assets/imgs/image_blank.png', hasImg: false},
+ 		{id: 3, src: 'assets/imgs/image_blank.png', hasImg: false},
+ 		{id: 4, src: 'assets/imgs/image_blank.png', hasImg: false},
+ 		{id: 5, src: 'assets/imgs/image_blank.png', hasImg: false},
+ 		{id: 6, src: 'assets/imgs/image_blank.png', hasImg: false}
  		];
  	}
 
@@ -382,7 +382,7 @@ import { ImagesProvider } from '../../providers/images/images';
  					role: 'destructive',
  					handler: () => {
  						this.imgPreviews[key]['hasImg'] = false;
- 						this.imgPreviews[key]['src'] = '../assets/imgs/image_blank.png';
+ 						this.imgPreviews[key]['src'] = 'assets/imgs/image_blank.png';
  						this.listing.images.splice(key, 1);
 
 
